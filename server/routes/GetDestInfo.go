@@ -2,13 +2,13 @@ package routes
 
 import (
     "net/http"
-    "log"
     "github.com/gorilla/mux"
     "encoding/json"
     "github.com/jmatth11/yfusion"
     "fmt"
-    "os"
-    "github.com/joho/godotenv"
+    // Removed these two purposes of running tests
+    // "os"
+    // "github.com/joho/godotenv"
     "vacation-planner/models"
 )
 
@@ -17,18 +17,19 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json")
 
     // Using godotenv to hide API keys
-    err := godotenv.Load()
-    if err != nil {
-        log.Fatal("Could not load .env file")
-    }
+
+    // COMMENTING OUT FOR TESTING PURPOSES
+    // err := godotenv.Load()
+    // if err != nil {
+    //     log.Fatal("Could not load .env file")
+    // }
+    // COMMENTED OUT FOR TESTING PURPOSES
 
     // Setting key var to YELP
-    yelpAPIKey := os.Getenv("YELP_REST_API_KEY")
-    // secretKey := os.Getenv("YELP_REST_SECRET_KEY")
-
-    // Connecting to database
-    // db := connect()
-    // defer db.Close()
+    // COMMENTED OUT FOR TESTING PURPOSES
+    // yelpAPIKey := os.Getenv("YELP_REST_API_KEY")
+    yelpAPIKey := "w09RoocygtRReubGF_vLBYqIszZkyzBukVeOtPo74PMAeQ9QzRmLGYF2WcE5KkhLuHVUWGAyFHSMeqQUfmmVgrHKe1kFDeqPbr53cpLcBtbUjKqYVlPTB770HJXUY3Yx"
+    // COMMENT ^ OUT WHEN TRYING TO RUN PROGRAM OUTSIDE OF TESTS
 
     // Taking the location value typed by the user, to use for computations
     params := mux.Vars(r)
@@ -144,8 +145,6 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
             }
         }
     }
-
-
     // Creating destination object of which we will return
     destination := &models.Destination{
         Location: [3]string{city, state, country},

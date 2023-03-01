@@ -14,7 +14,13 @@ func (h DBRouter) CreateUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
-	  }
+	}
+
+	// Adding template response for front end
+	type SignupAttempt struct {
+		Success 	bool   `json: "success"`
+		Message 	string `json: "message"`
+	}
 
 	// Creating two new variables to use as reference
 	var requestBody map[string]interface{}
@@ -28,7 +34,7 @@ func (h DBRouter) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Added a line to check the database for any users with the same email as the new account
-	
+
 	result := h.DB.First(&models.User{}, "Email = ?", requestBody["Email"].(string))
 
 	// Checking if the rows that have the email is 0 therefore nobody has the email
@@ -36,7 +42,7 @@ func (h DBRouter) CreateUser(w http.ResponseWriter, r *http.Request) {
 		// Assigning Email and Password to new User
 		user.Email = requestBody["Email"].(string)
 		user.Password = requestBody["Password"].(string)
-	
+
 		// Creating new user in the DB and checking for error
 		if newUser := h.DB.Create(&user); newUser.Error != nil {
 			fmt.Println(newUser.Error)
@@ -45,20 +51,27 @@ func (h DBRouter) CreateUser(w http.ResponseWriter, r *http.Request) {
 		// Setting headers
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		
-		// Not generating accurate response data(?), looking to meet to come to concensus on how exactly
-		// we plan on passing information back and forth
-		//
-		// Essentially I would be encoding some sort of response with 
-		// "json.NewEncoder(w).Encode(response)"
-		//
-		// For now, I'm just printing validation strings.
 
-		w.Write([]byte("New user successfully created."))
+		// Initalizing response variable to hold a boolean and a string message
+		response := SignupAttempt{ Success: true, Message: "User succesfully created account" }
+		// Packing response as type JSON
+		jsonResponse, err1 := json.Marshal(response)
+		if err1 != nil {
+			http.Error(w, err1.Error(), http.StatusBadRequest)
+			return
+		}
+		// Write JSON response
+		w.Write(jsonResponse)
 
 	} else {
 		// If Rows Affected (rows with email given) is greater than 0, therefore someone has an account with
 		// the email given, we don't create a new user and tell them their email is taken.
-		w.Write([]byte("Email taken!"))
+		response := SignupAttempt{ Success: false, Message: "Email is already in use" }
+		jsonResponse, err2 := json.Marshal(response)
+		if err2 != nil {
+			http.Error(w, err2.Error(), http.StatusBadRequest)
+			return
+		}
+		w.Write(jsonResponse)
 	}
 }

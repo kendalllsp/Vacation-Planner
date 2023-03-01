@@ -8,27 +8,28 @@
 
             <mat-form-field>
                 <mat-label>Enter your email</mat-label>
-                <input matInput placeholder="me@example.com" required>
+                <input matInput placeholder="me@example.com" [(ngModel)]="email" name="email" required>
                 <!-- <input matInput placeholder="me@example.com" [formControl]="email" required> -->
                 <!-- <mat-error *ngIf="email.invalid"{{getErrorMessage()}}</mat-error> -->
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Enter your password</mat-label>
-                <input matInput placeholder="********" required>
+                <input matInput placeholder="********" [(ngModel)]="password" name="password" required>
                 <!-- <input matInput placeholder="me@example.com" [formControl]="email" required> -->
                 <!-- <mat-error *ngIf="email.invalid"{{getErrorMessage()}}</mat-error> -->
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Confirm your password</mat-label>
-                <input matInput placeholder="********" required>
+                <input matInput placeholder="********" [(ngModel)]="password1" name="password1" required>
                 <!-- <input matInput placeholder="me@example.com" [formControl]="email" required> -->
                 <!-- <mat-error *ngIf="email.invalid"{{getErrorMessage()}}</mat-error> -->
             </mat-form-field>
 
             <div class="signup-button">
-                <a mat-raised-button color="primary">Create Account</a>
+                <!-- added function to be called on button click -->
+                <a mat-raised-button color="primary" (click)="createUser()">Create Account</a>
             </div>
 
         </mat-card>

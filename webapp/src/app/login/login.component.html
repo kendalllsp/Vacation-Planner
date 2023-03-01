@@ -5,24 +5,26 @@
 
             <mat-card-title>Login</mat-card-title>
 
-
             <mat-form-field>
                 <mat-label>Enter your email</mat-label>
-                <input matInput placeholder="me@example.com" required>
+                <!-- set email input field to be equal to email string variable within the type script code for component-->
+                <input matInput placeholder="me@example.com" [(ngModel)]="email" name="email" required>
                 <!-- <input matInput placeholder="me@example.com" [formControl]="email" required> -->
                 <!-- <mat-error *ngIf="email.invalid"{{getErrorMessage()}}</mat-error> -->
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Enter your password</mat-label>
-                <input matInput placeholder="********" required>
+                <!-- set password input field to be equal to password string variable within the type script code for component-->
+                <input matInput placeholder="********" [(ngModel)]="password" name="password" required>
                 <!-- <input matInput placeholder="me@example.com" [formControl]="email" required> -->
                 <!-- <mat-error *ngIf="email.invalid"{{getErrorMessage()}}</mat-error> -->
             </mat-form-field>
 
             <div class="login-button">
                 <a mat-raised-button color="primary" routerLink="/signup">Sign up</a>
-                <a mat-raised-button color="primary" routerLink=".">Log in</a>
+                <!-- set log in button to call loginUser() function of the login component on the button click-->
+                <a mat-raised-button color="primary" (click)="loginUser()">Log in</a>
             </div>
 
         </mat-card>

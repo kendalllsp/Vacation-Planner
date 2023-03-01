@@ -6,14 +6,20 @@ import (
 	"vacation-planner/models"
 )
 
-// Login user GET, using HTTP request body information for email and password
+// Login user POST, using HTTP request body information for email and password
 func (h DBRouter) LoginUser(w http.ResponseWriter, r *http.Request) {
 
-	// Only GET is allowed for this route
-	if r.Method != "GET" {
+	// Only POST is allowed for this route
+	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
-	  }
+	}
+
+	// Initialized response struct with boolean and message for details
+	type LoginAttempt struct {
+		LoggedIn 	bool 	`json: "loggedin"`
+		Message 	string	`json: "message"`
+	}
 
 	// Creating new variable for storing request body
 	var requestBody map[string]interface{}
@@ -34,24 +40,40 @@ func (h DBRouter) LoginUser(w http.ResponseWriter, r *http.Request) {
 
 		// Checking if the password given in the request matches the password stored for the user in the DB
 		if existingUser.Password != requestBody["Password"].(string) {
-			// Will eventually encode a response for password not matching
-			w.Write([]byte("Password given does not match password associated with this email!"))
+			// Creating new response under LoginAttempt struct style
+			// Marshaling response as JSON and writing it as response
+			response := LoginAttempt { LoggedIn: false, Message: "Email and password combination does not exist." }
+			jsonResponse, err1 := json.Marshal(response)
+			if err1 != nil {
+				http.Error(w, err1.Error(), http.StatusBadRequest)
+				return
+			}
+			w.Write(jsonResponse)
 		} else {
 
 			// Setting headers
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
 
-			// Essentially I would be encoding some sort of response with 
-			// "json.NewEncoder(w).Encode(response)"
-			//
-			// For now, I'm just printing validation strings.
-
-			w.Write([]byte("User successfully logged in."))
+			// Creating new response under LoginAttempt struct style
+			// Marshaling response as JSON and writing it as response
+			response := LoginAttempt { LoggedIn: true, Message: "User successfully logged in." }
+			jsonResponse, err2 := json.Marshal(response)
+			if err2 != nil {
+				http.Error(w, err2.Error(), http.StatusBadRequest)
+				return
+			}
+			w.Write(jsonResponse)
 		}
 	} else {
 		// If Rows Affected (rows with email given) is  0, therefore nobody has an account with
 		// the email given, we can't login the user and tell them their email is not in use by our website.
-		w.Write([]byte("Email not in use!"))
+		response := LoginAttempt { LoggedIn: false, Message: "Email not in use in our userbase." }
+			jsonResponse, err3 := json.Marshal(response)
+			if err3 != nil {
+				http.Error(w, err3.Error(), http.StatusBadRequest)
+				return
+			}
+			w.Write(jsonResponse)
 	}
 }
