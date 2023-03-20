@@ -36,6 +36,7 @@ export class LoginComponent {
         const jsonData = JSON.parse(JSON.stringify(response));
         // If logged in, go to main page
         if (jsonData.LoggedIn) {
+          sessionStorage.setItem('loggedIn', jsonData.Email)
           this.router.navigate(['']);
         }
         // If not logged in, say at login page
