@@ -2,7 +2,10 @@
     <div class="navbar-container">
         <mat-toolbar color="transparent">
             <div class="navbar-title">
-                <span mat-button (click)="homeIfLoggedIn()")>Vacation Planner</span>
+                <!-- Added a function to the home page home button, to where it links the user to the trips
+                     page ONLY if the user has successfully logged in. This is a test implementation to see if
+                     I could get the "loggedIn" status to be saved amongst multiple components. -->
+                <a mat-button (click)="tripsIfLoggedIn()">Vacation Planner</a>
             </div>
             <div class="navbar-centered">
             </div>
