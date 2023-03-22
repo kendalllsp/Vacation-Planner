@@ -6,9 +6,9 @@ import (
     "encoding/json"
     "github.com/jmatth11/yfusion"
     "fmt"
-    // Removed these two purposes of running tests
-    // "os"
-    // "github.com/joho/godotenv"
+    "os"
+    "log"
+    "github.com/joho/godotenv"
     "vacation-planner/models"
 )
 
@@ -18,18 +18,13 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
 
     // Using godotenv to hide API keys
 
-    // COMMENTING OUT FOR TESTING PURPOSES
-    // err := godotenv.Load()
-    // if err != nil {
-    //     log.Fatal("Could not load .env file")
-    // }
-    // COMMENTED OUT FOR TESTING PURPOSES
+    err := godotenv.Load()
+    if err != nil {
+        log.Fatal("Could not load .env file")
+    }
 
     // Setting key var to YELP
-    // COMMENTED OUT FOR TESTING PURPOSES
-    // yelpAPIKey := os.Getenv("YELP_REST_API_KEY")
-    yelpAPIKey := "w09RoocygtRReubGF_vLBYqIszZkyzBukVeOtPo74PMAeQ9QzRmLGYF2WcE5KkhLuHVUWGAyFHSMeqQUfmmVgrHKe1kFDeqPbr53cpLcBtbUjKqYVlPTB770HJXUY3Yx"
-    // COMMENT ^ OUT WHEN TRYING TO RUN PROGRAM OUTSIDE OF TESTS
+    yelpAPIKey := os.Getenv("YELP_REST_API_KEY")
 
     // Taking the location value typed by the user, to use for computations
     params := mux.Vars(r)
