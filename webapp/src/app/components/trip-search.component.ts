@@ -2,7 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {FormControl, FormGroup,} from '@angular/forms';
 import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { map, catchError, tap } from 'rxjs/operators';
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Trip } from '../trip';
 import { TripsService } from '../trips.service';
 
@@ -58,7 +58,35 @@ export class TripSearchComponent {
   templateUrl: 'destination-dialog.component.html',
 })
 export class DestinationResultDialog {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    // console.log('data passed in is:', this.data);
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient) {}
+
+  // Created function for when the save destination button is clicked on within the dialog window
+  saveDestination() {
+    // Checking if the loggedIn sessionStorage value has been set
+    if (sessionStorage.getItem('loggedIn') != null)
+    {
+      // Setting the location from the trip component to be passed to the backend
+      // Using the email from the loggedIn variable
+      var location = this.data.results.Location[0] + ", " + this.data.results.Location[1]
+      const params = { Email: sessionStorage.getItem('loggedIn'), Location: location }
+
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+  
+      // Calling the backend with the post request to create new destination in the list with the location and users email
+      this.http.post("http://localhost:8181/updateDestination", params, httpOptions)
+      .subscribe(response => {
+          // Print request response to JS console
+          console.log(response)
+      });
+    }
+    else
+    {
+      // Logging error message if the user is not logged in.
+      console.log("You have to log in, dork.")
+    }
   }
 }

@@ -36,6 +36,9 @@ export class LoginComponent {
         const jsonData = JSON.parse(JSON.stringify(response));
         // If logged in, go to main page
         if (jsonData.LoggedIn) {
+          // Added a line that sets the loggedIn sessionStorage variable to the user's email. This is only
+          // on a succcessful login, so all other times the value will be null.
+          sessionStorage.setItem('loggedIn', jsonData.Email)
           this.router.navigate(['']);
         }
         // If not logged in, say at login page

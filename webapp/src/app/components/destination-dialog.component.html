@@ -37,3 +37,8 @@
                 </ul>
         </ul>
 </div>
+<!-- Created a new dialog action area for the save destination button that calls
+     the saveDestination function in the dest. dialog component -->
+<mat-dialog-actions align="end">
+    <button mat-button (click)="saveDestination()" cdkFocusInitial>Save Destination</button>
+  </mat-dialog-actions>

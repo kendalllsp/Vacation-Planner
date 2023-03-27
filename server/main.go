@@ -33,7 +33,7 @@ func main() {
 	r.HandleFunc("/loginUser", h.LoginUser).Methods("POST")
 
 	// Created a new route that can take 3 HTTP method requests to update locations in the savedLocation table for users to have their own Destination Lists
-	r.HandleFunc("/updateDestination", h.UpdateDestination).Methods("PUT")
+	r.HandleFunc("/updateDestination", h.UpdateDestination).Methods("POST")
 	r.HandleFunc("/updateDestination", h.UpdateDestination).Methods("DELETE")
 	r.HandleFunc("/updateDestination", h.UpdateDestination).Methods("GET")
 
