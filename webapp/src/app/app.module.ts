@@ -10,8 +10,12 @@ import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AppComponent } from './app.component';
 
 import { NavbarComponent } from './navbar/navbar.component';
+import { NavbarLoggedInComponent } from './navbar-logged-in/navbar-logged-in.component';
 
 import { HomeComponent } from './home/home.component';
+
+import { HomeLoggedInComponent } from './home-logged-in/home-logged-in.component';
+
 import { TripSearchComponent, DestinationResultDialog } from './components/trip-search.component';
 
 import { LoginComponent } from './login/login.component';
@@ -33,7 +37,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
   declarations: [
     AppComponent,
     NavbarComponent,
+    NavbarLoggedInComponent,
     HomeComponent,
+    HomeLoggedInComponent,
     TripSearchComponent,
     DestinationResultDialog,
     LoginComponent,

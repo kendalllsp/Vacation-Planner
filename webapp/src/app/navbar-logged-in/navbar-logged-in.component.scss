@@ -1,0 +1,36 @@
+.mat-toolbar {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.navbar-title {
+  flex: 1 ;          /* shorthand for: flex-grow: 1, flex-shrink: 1, flex-basis: 0 */
+  min-width: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+ 
+.navbar-centered {
+  flex: 0;          /* shorthand for: flex-grow: 1, flex-shrink: 1, flex-basis: 0 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px dashed red; */
+}
+
+.navbar-right {
+  flex: 1;          /* shorthand for: flex-grow: 1, flex-shrink: 1, flex-basis: 0 */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  /* border: 1px dashed red; */
+}
+
+/* .form-centered{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border: 1px dashed red;
+  margin-bottom: -1.25em;
+} */

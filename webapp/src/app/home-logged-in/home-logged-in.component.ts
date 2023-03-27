@@ -12,11 +12,11 @@ import { Router } from '@angular/router';
  * @title Basic grid-list
  */
 @Component({
-  selector: 'app-home',
-  styleUrls: ['home.component.scss'],
-  templateUrl: 'home.component.html',
+  selector: 'app-home-logged-in',
+  styleUrls: ['home-logged-in.component.scss'],
+  templateUrl: 'home-logged-in.component.html',
 })
-export class HomeComponent {
+export class HomeLoggedInComponent {
 
   // Injecting Router to be used within the Home Component
   constructor(private router: Router) {}
@@ -24,17 +24,11 @@ export class HomeComponent {
   // Creating the tripsIfLoggedIn function that is called when the home button is clicked in the home component.
   // It creates a new variable based off of the sessionStorage value which is set on a successful login, and not ever
   // set if the user has not logged in. Therefore we're checking if it's null or not.
-  tripsIfLoggedIn() {
+  logOut() {
     const loggedIn = sessionStorage.getItem('loggedIn')
-    if (loggedIn != null)
-    {
-      // If the loggedIn variable has a value(email) then the router will take us to the trips page.
-      this.router.navigate(['/trips'])
-    }
-    else
-    {
-      // If the loggedIn variable is null then the router will take us to the login page.
-      this.router.navigate(['/login'])
-    }
+    // Deleting the loggedIn val and routing back home
+    sessionStorage.removeItem('loggedIn')
+    this.router.navigate([''])
   }
+
 }
