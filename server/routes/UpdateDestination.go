@@ -150,15 +150,12 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 		}
 	} else if r.Method == "GET" {
 
-		// Decoding request body for the email of the accounts destination list
-		err := json.NewDecoder(r.Body).Decode(&requestBody)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
+		// Changed GET request to refer to url parameters
+		// and changed the rest of the GET's email references to this variable
+		email := r.URL.Query().Get("Email")
 
 		// Checking the database for a user with the same email as the account trying to update location list
-		result := h.DB.First(&models.User{}, "Email = ?", requestBody["Email"].(string))
+		result := h.DB.First(&models.User{}, "Email = ?", email)
 
 		// If there is no user with said email, return error
 		if result.RowsAffected == 0 {
@@ -169,7 +166,7 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 			// Start a new variable that is a slice of saved locations, to add the specific users locations to
 			var locations []models.SavedLocation
 			// Finding all rows within Saved Locations with the given email
-			h.DB.Where("email = ?", requestBody["Email"].(string)).Find(&locations)
+			h.DB.Where("email = ?", email).Find(&locations)
 
 			// Checking if the rows that have the email is not 0 therefore they have saved locations
 			if len(locations) != 0 {
