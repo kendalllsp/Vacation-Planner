@@ -16,11 +16,7 @@ export class NavbarLoggedInComponent {
   // set if the user has not logged in. Therefore we're checking if it's null or not.
   logOut() {
     const loggedIn = sessionStorage.getItem('loggedIn')
-    if (loggedIn != null)
-    {
-      // If the loggedIn variable has a value(email) then the we will delete it and route back to the home page.
-      sessionStorage.removeItem('loggedIn')
-      this.router.navigate([''])
-    }
+    sessionStorage.removeItem('loggedIn')
+    this.router.navigate([''])
   }
 }
