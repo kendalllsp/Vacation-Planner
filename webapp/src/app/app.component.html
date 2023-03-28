@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
 <!-- First view -->
-<div *ngIf="isRoute('/')">
+<div *ngIf="isRoute('/') && isRoute('/homeLoggedIn')">
+</div>
+<div *ngIf="isRoute('/trips')">
+    <app-navbar-logged-in></app-navbar-logged-in>
 </div>
 <!-- Second view activated when the route doesn't contain the home route -->
-<div *ngIf="!isRoute('/')">
+<div *ngIf="!isRoute('/') && !isRoute('/homeLoggedIn') && !isRoute('/trips')">
     <app-navbar></app-navbar>
 </div>
 <router-outlet></router-outlet>
