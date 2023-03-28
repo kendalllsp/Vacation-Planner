@@ -39,7 +39,7 @@ export class LoginComponent {
           // Added a line that sets the loggedIn sessionStorage variable to the user's email. This is only
           // on a succcessful login, so all other times the value will be null.
           sessionStorage.setItem('loggedIn', jsonData.Email)
-          this.router.navigate(['']);
+          this.router.navigate(['/homeLoggedIn']);
         }
         // If not logged in, say at login page
         else {

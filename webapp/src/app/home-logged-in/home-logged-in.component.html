@@ -2,14 +2,13 @@
     <div class="navbar-container">
         <mat-toolbar color="transparent">
             <div class="navbar-title">
-                <span mat-button routerLink= "/" routerLinkActive="bg-image" 
-            [routerLinkActiveOptions]="{exact:true}">Vacation Planner</span>
+                <a>Vacation Planner</a>
             </div>
             <div class="navbar-centered">
             </div>
             <div class="navbar-right">
-                <a mat-button (click)="tripsIfLoggedIn()" routerLinkActive="mat-accent">Trips</a>
-                <a mat-button routerLink="/login" routerLinkActive="mat-accent">Log in</a>
+                <a mat-button routerLink="/trips" routerLinkActive="mat-accent">Trips</a>
+                <a mat-button (click)="logOut()" routerLinkActive="mat-accent">Log Out</a>
             </div>
         </mat-toolbar>
     </div>
