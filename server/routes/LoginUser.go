@@ -18,6 +18,9 @@ func (h DBRouter) LoginUser(w http.ResponseWriter, r *http.Request) {
 	// Initialized response struct with boolean and message for details
 	type LoginAttempt struct {
 		LoggedIn 	bool 	`json: "loggedin"`
+		// Added an email string value to the response JSON so that the front-end can use it
+		// easily when sending requests revolving user's email.
+		Email 		string	`json: "email"`
 		Message 	string	`json: "message"`
 	}
 
@@ -42,7 +45,8 @@ func (h DBRouter) LoginUser(w http.ResponseWriter, r *http.Request) {
 		if existingUser.Password != requestBody["Password"].(string) {
 			// Creating new response under LoginAttempt struct style
 			// Marshaling response as JSON and writing it as response
-			response := LoginAttempt { LoggedIn: false, Message: "Email and password combination does not exist." }
+			// Now including the Email string in the response
+			response := LoginAttempt { LoggedIn: false, Email: requestBody["Email"].(string), Message: "Email and password combination does not exist." }
 			jsonResponse, err1 := json.Marshal(response)
 			if err1 != nil {
 				http.Error(w, err1.Error(), http.StatusBadRequest)
@@ -57,7 +61,9 @@ func (h DBRouter) LoginUser(w http.ResponseWriter, r *http.Request) {
 
 			// Creating new response under LoginAttempt struct style
 			// Marshaling response as JSON and writing it as response
-			response := LoginAttempt { LoggedIn: true, Message: "User successfully logged in." }
+			// Now including the Email string in the response
+
+			response := LoginAttempt { LoggedIn: true, Email: requestBody["Email"].(string), Message: "User successfully logged in." }
 			jsonResponse, err2 := json.Marshal(response)
 			if err2 != nil {
 				http.Error(w, err2.Error(), http.StatusBadRequest)
@@ -68,7 +74,9 @@ func (h DBRouter) LoginUser(w http.ResponseWriter, r *http.Request) {
 	} else {
 		// If Rows Affected (rows with email given) is  0, therefore nobody has an account with
 		// the email given, we can't login the user and tell them their email is not in use by our website.
-		response := LoginAttempt { LoggedIn: false, Message: "Email not in use in our userbase." }
+		// Now including the Email string in the response
+
+		response := LoginAttempt { LoggedIn: false, Email: requestBody["Email"].(string), Message: "Email not in use in our userbase." }
 			jsonResponse, err3 := json.Marshal(response)
 			if err3 != nil {
 				http.Error(w, err3.Error(), http.StatusBadRequest)

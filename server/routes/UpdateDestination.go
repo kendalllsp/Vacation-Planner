@@ -7,7 +7,7 @@ import (
 	"vacation-planner/models"
 )
 
-// Update Destination route, using HTTP method (Put/Delete) to determine what
+// Update Destination route, using HTTP method (Get/Post/Delete) to determine what
 // action to do with body information updating saved locations
 func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 
@@ -16,8 +16,14 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 	// savedLocation to add to the database of savedLocations
 	var requestBody map[string]interface{}
 
+	// Initializing Struct for JSON response data
+	type responseBody struct {
+		Saved 	bool 	`json: "saved"`
+		Message string 	`json: "message"`
+	}
+
 	// If adding to location list
-	if r.Method == "PUT" {
+	if r.Method == "POST" {
 
 		var savedLocation models.SavedLocation
 
@@ -35,7 +41,17 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 		if result.RowsAffected == 0 {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte("No user with the email address associated."))
+			
+			// Creating new response body based on the situation and returning it
+			response := responseBody { Saved: false, Message: "No user with given email." }
+
+			jsonResponse, err1 := json.Marshal(response)
+			if err1 != nil {
+				http.Error(w, err1.Error(), http.StatusBadRequest)
+				return
+			}
+			w.Write(jsonResponse)
+
 		} else {
 
 			// Checking the savedLocations for a value with the email and location, meaning the wrong call was called.. meaning to delete already saved location
@@ -56,21 +72,31 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 				// Setting headers
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusOK)
-		
-				// Not generating accurate response data(?), looking to meet to come to concensus on how exactly
-				// we plan on passing information back and forth
-				//
-				// Essentially I would be encoding some sort of response with 
-				// "json.NewEncoder(w).Encode(response)"
-				//
-				// For now, I'm just printing validation strings.
 
-				w.Write([]byte("New location successfully saved."))
+				// Creating new response body based on the situation and returning it
+
+				response := responseBody { Saved: true, Message: "New location successfully saved." }
+
+				jsonResponse, err1 := json.Marshal(response)
+				if err1 != nil {
+					http.Error(w, err1.Error(), http.StatusBadRequest)
+					return
+				}
+				w.Write(jsonResponse)
 
 			} else {
 				// If Rows Affected (rows with email given) is greater than 0, therefore the user with said email
 				// has already saved the location given. In order to delete, front end should call Delete HTTP request not PUT.
-				w.Write([]byte("Location already saved."))
+				
+				// Creating new response body based on the situation and returning it
+
+				response := responseBody { Saved: false, Message: "User already has location saved." }
+				jsonResponse, err1 := json.Marshal(response)
+				if err1 != nil {
+					http.Error(w, err1.Error(), http.StatusBadRequest)
+					return
+				}
+				w.Write(jsonResponse)
 			}
 		}
 	// if deleting from location list
