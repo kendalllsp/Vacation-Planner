@@ -32,4 +32,19 @@ export class TripsCardDeckComponent{
       });
   }
 
+  deleteTrip(location: string) {
+
+    var email = sessionStorage.getItem("loggedIn")
+
+    const options = {
+      headers: { 'Content-Type': 'application/json' },
+      body: { email, location }
+    };
+
+    this.http.delete('http://localhost:8181/updateDestination', options).subscribe(() => {
+      console.log("test")
+    });
+
+  }
+
 }

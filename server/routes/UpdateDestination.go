@@ -109,6 +109,7 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+
 		// Checking user table for user with email given
 		result := h.DB.First(&models.User{}, "Email = ?", requestBody["Email"].(string))
 
@@ -131,21 +132,33 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 				// Setting headers
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusOK)
-		
-				// Not generating accurate response data(?), looking to meet to come to concensus on how exactly
-				// we plan on passing information back and forth
-				//
-				// Essentially I would be encoding some sort of response with 
-				// "json.NewEncoder(w).Encode(response)"
-				//
-				// For now, I'm just printing validation strings.
 
-				w.Write([]byte("Location successfully deleted."))
+				// Creating new response body based on the situation and returning it
+
+				response := responseBody { Saved: false, Message: "Location successfuly deleted." }
+
+				jsonResponse, err1 := json.Marshal(response)
+				if err1 != nil {
+					http.Error(w, err1.Error(), http.StatusBadRequest)
+					return
+				}
+				w.Write(jsonResponse)
 
 			} else {
-				// If Rows Affected (rows with email given) is 0, therefore the user does not have said
-				// location saved to be deleted, returning validation string
-				w.Write([]byte("Account does not have location saved in order to be deleted."))
+				// Setting headers
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusOK)
+
+				// Creating new response body based on the situation and returning it
+
+				response := responseBody { Saved: false, Message: "No saved location by the specfied user matches the location given." }
+
+				jsonResponse, err1 := json.Marshal(response)
+				if err1 != nil {
+					http.Error(w, err1.Error(), http.StatusBadRequest)
+					return
+				}
+				w.Write(jsonResponse)
 			}
 		}
 	} else if r.Method == "GET" {
