@@ -20,6 +20,7 @@ func TestUserLogin(t *testing.T) {
 	//formatting of the returned JSON body
 	type LoginAttempt struct {
 		LoggedIn bool   `json: "loggedin"`
+		Email    string `json: "email"`
 		Message  string `json: "message"`
 	}
 
@@ -53,7 +54,7 @@ func TestUserLogin(t *testing.T) {
 	}
 
 	//with this email and password, we expect the user to be logged in
-	response := LoginAttempt{LoggedIn: true, Message: "User successfully logged in."}
+	response := LoginAttempt{LoggedIn: true, Email: "123@gmail.com", Message: "User successfully logged in."}
 	jsonResponse, err := json.Marshal(response)
 
 	//testing if the response matches output
@@ -84,7 +85,7 @@ func TestUserLogin(t *testing.T) {
 	}
 
 	//this email is not in the database of users
-	response = LoginAttempt{LoggedIn: false, Message: "Email not in use in our userbase."}
+	response = LoginAttempt{LoggedIn: false, Email: "a@gmail.com", Message: "Email not in use in our userbase."}
 	jsonResponse, err = json.Marshal(response)
 
 	//testing if the response matches output
@@ -115,7 +116,7 @@ func TestUserLogin(t *testing.T) {
 	}
 
 	//the password does not match with the user input in the database
-	response = LoginAttempt{LoggedIn: false, Message: "Email and password combination does not exist."}
+	response = LoginAttempt{LoggedIn: false, Email: "123@gmail.com", Message: "Email and password combination does not exist."}
 	jsonResponse, err = json.Marshal(response)
 
 	//testing to see if expected response matches output
