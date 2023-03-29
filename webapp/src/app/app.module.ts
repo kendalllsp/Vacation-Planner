@@ -57,7 +57,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   providers: [
     MessageService

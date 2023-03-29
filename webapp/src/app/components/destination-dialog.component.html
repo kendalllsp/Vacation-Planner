@@ -1,44 +1,75 @@
-<h2 mat-dialog-title>{{data.results.Location[0]}}, {{data.results.Location[1]}}  Highlights</h2>
-<div mat-dialog-content>
+<div class="destination-dialog-header">
+    <h2 mat-dialog-title>{{data.results.Location[0]}}, {{data.results.Location[1]}}  Highlights
+        <a (click)="saveDestination()" type="button"><fa-icon [icon]="isBookmarked"></fa-icon></a>
+    </h2>
+</div>
+
+
+  <div mat-dialog-content>
     <h3>Restaurants</h3>
-        <ul *ngFor="let item of data.results.Restaurants">
-            <li class="parentNav">{{item.Name}}</li>
-                <ul class="childData">
-                    <ul>
-                        <li>Rating: {{item.Rating}}</li>
-                        <li>Price: {{item.Price}}</li>
-                        <li>Location: {{item.Location}}</li>
-                        <li>Type: {{item.Type}}</li>
-                    </ul>
-                </ul>
-        </ul>
+    <div class="scrolling-wrapper-flexbox" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch">
+        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="75%" *ngFor="let item of data.results.Restaurants">
+            <div class="content">
+                <mat-card>
+                    <mat-card-header>
+                    <mat-card-title>{{item.Name}}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>Rating: {{item.Rating}}<br>
+                            Price: {{item.Price}}<br>
+                            Location: {{item.Location}}<br>
+                            Type: {{item.Type}}<br></p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                    <button mat-button>Save</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
     <h3>Entertainment</h3>
-        <ul *ngFor="let item of data.results.Entertainment">
-            <li class="parentNav">{{item.Name}}</li>
-                <ul class="childData">
-                    <ul>
-                        <li>Rating: {{item.Rating}}</li>
-                        <li>Price: {{item.Price}}</li>
-                        <li>Location: {{item.Location}}</li>
-                        <li>Type: {{item.Type}}</li>
-                    </ul>
-                </ul>
-        </ul>
+    <div class="scrolling-wrapper-flexbox" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch">
+        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="75%" *ngFor="let item of data.results.Entertainment">
+            <div class="content">
+                <mat-card>
+                    <mat-card-header>
+                    <mat-card-title>{{item.Name}}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>Rating: {{item.Rating}}<br>
+                            Price: {{item.Price}}<br>
+                            Location: {{item.Location}}<br>
+                            Type: {{item.Type}}<br></p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                    <button mat-button>Save</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+    </div>
     <h3>Shopping</h3>
-        <ul *ngFor="let item of data.results.Shopping">
-            <li class="parentNav">{{item.Name}}</li>
-                <ul class="childData">
-                    <ul>
-                        <li>Rating: {{item.Rating}}</li>
-                        <li>Price: {{item.Price}}</li>
-                        <li>Location: {{item.Location}}</li>
-                        <li>Type: {{item.Type}}</li>
-                    </ul>
-                </ul>
-        </ul>
+    <div class="scrolling-wrapper-flexbox" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch">
+        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="75%" *ngFor="let item of data.results.Shopping">
+            <div class="content">
+                <mat-card>
+                    <mat-card-header>
+                    <mat-card-title>{{item.Name}}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>Rating: {{item.Rating}}<br>
+                            Price: {{item.Price}}<br>
+                            Location: {{item.Location}}<br>
+                            Type: {{item.Type}}<br></p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                    <button mat-button>Save</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Created a new dialog action area for the save destination button that calls
      the saveDestination function in the dest. dialog component -->
-<mat-dialog-actions align="end">
-    <button mat-button (click)="saveDestination()" cdkFocusInitial>Save Destination</button>
-  </mat-dialog-actions>
