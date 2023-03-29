@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TripSearchComponent } from './trip-search.component';
 import { AppModule } from '../app.module';
 
-describe('NavbarComponent', () =>  {
+describe('TripSearchComponent', () =>  {
     let component: TripSearchComponent;
     let fixture: ComponentFixture<TripSearchComponent>;
     let router: Router;
@@ -26,7 +26,7 @@ describe('NavbarComponent', () =>  {
         router = TestBed.inject(Router);
     });
 
-    it('should create the navbar component', () => {
+    it('should create the TripSearchComponent', () => {
         const fixture = TestBed.createComponent(TripSearchComponent);
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();

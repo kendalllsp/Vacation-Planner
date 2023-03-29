@@ -32,7 +32,7 @@ describe('NavbarComponent', () =>  {
         expect(app).toBeTruthy();
     });
 
-    it('should navigate to', () => {
+    it('should navigate to NavbarComponent', () => {
         const navigateSpy = spyOn(router, 'navigate');
         const button = fixture.debugElement.nativeElement.querySelector('.navbar-right');
         button.click();

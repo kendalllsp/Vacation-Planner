@@ -29,7 +29,7 @@ describe('LoginComponent', () =>  {
         router = TestBed.inject(Router);
     });
 
-    it('should create the login component', () => {
+    it('should create the LoginComponent', () => {
         const fixture = TestBed.createComponent(LoginComponent);
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
