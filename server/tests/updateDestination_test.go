@@ -129,11 +129,12 @@ func TestUpdateDestination(t *testing.T) {
 	}
 
 	//expected response:
-	expectedResponse := []byte("No user with the email address associated.")
+	response = responseBody{Saved: false, Message: "No user with given email."}
+	jsonResponse, err = json.Marshal(response)
 
 	//testing that expected response matches rr4
-	if !bytes.Equal(rr4.Body.Bytes(), expectedResponse) {
-		t.Errorf("handler returned unexpected response: got %v want %v", rr4.Body.String(), expectedResponse)
+	if !bytes.Equal(rr4.Body.Bytes(), jsonResponse) {
+		t.Errorf("handler returned unexpected response: got %v want %v", rr4.Body.String(), jsonResponse)
 	} else {
 		fmt.Printf("DELETE Case 1 passed!!\n")
 	}
@@ -153,9 +154,10 @@ func TestUpdateDestination(t *testing.T) {
 	if status := rr5.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
 	}
-	expectedResponse = []byte("Location successfully deleted.")
-	if !bytes.Equal(rr5.Body.Bytes(), expectedResponse) {
-		t.Errorf("handler returned unexpected response: got %v want %v", rr5.Body.String(), expectedResponse)
+	response = responseBody{Saved: false, Message: "Location successfuly deleted."}
+	jsonResponse, err = json.Marshal(response)
+	if !bytes.Equal(rr5.Body.Bytes(), jsonResponse) {
+		t.Errorf("handler returned unexpected response: got %v want %v", rr5.Body.String(), jsonResponse)
 	} else {
 		fmt.Printf("DELETE Case 2 passed!!\n")
 	}
@@ -175,18 +177,99 @@ func TestUpdateDestination(t *testing.T) {
 	if status := rr6.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
 	}
-	expectedResponse = []byte("Account does not have location saved in order to be deleted.")
-	if !bytes.Equal(rr6.Body.Bytes(), expectedResponse) {
-		t.Errorf("handler returned unexpected response: got %v want %v", rr6.Body.String(), expectedResponse)
+	response = responseBody{Saved: false, Message: "No saved location by the specfied user matches the location given."}
+	jsonResponse, err = json.Marshal(response)
+	if !bytes.Equal(rr6.Body.Bytes(), jsonResponse) {
+		t.Errorf("handler returned unexpected response: got %v want %v", rr6.Body.String(), jsonResponse)
 	} else {
 		fmt.Printf("DELETE Case 3 passed!!\n")
 	}
 
 	//GET (just written bytes as of sprint 3)
 	//case 1: no user with that email
+	email = "a@gmail.com"
+	location = "Paris"
+	payload = fmt.Sprintf(`{"Email": "%s", "Location": "%s"}`, email, location)
+
+	//make a request to the database
+	req, err = http.NewRequest("GET", "/updateDestination", strings.NewReader(payload))
+	if err != nil {
+		t.Errorf("Error: request could not be completed")
+	}
+	rr = httptest.NewRecorder()
+	r = mux.NewRouter()
+	r.HandleFunc("/updateDestination", h.UpdateDestination).Methods("GET")
+	r.ServeHTTP(rr, req)
+
+	//error handling for wrong http status code
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+
+	//expected response:
+	expectedResponse := []byte("No user with the email address associated.")
+
+	//testing that expected response matches rr4
+	if !bytes.Equal(rr.Body.Bytes(), expectedResponse) {
+		t.Errorf("handler returned unexpected response: got %v want %v", rr.Body.String(), expectedResponse)
+	} else {
+		fmt.Printf("GET Case 1 passed!!\n")
+	}
 
 	//case 2: returns an array of locations
+	email = "Test@test.com"
+	location = "Paris"
+	payload = fmt.Sprintf(`{"Email": "%s", "Location": "%s"}`, email, location)
+	req, err = http.NewRequest("GET", "/updateDestination", strings.NewReader(payload))
+	if err != nil {
+		t.Errorf("Error: request could not be completed")
+	}
+	rr = httptest.NewRecorder()
+	r = mux.NewRouter()
+	r.HandleFunc("/updateDestination", h.UpdateDestination).Methods("GET")
+	r.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	} else {
+		fmt.Printf("GET Case 2 passed!!\n")
+	}
+
+	/**expectedResponse = []byte("Gainesville, Miami")
+	//expected response is an array of locations
+	var locations []models.SavedLocation := ({Email: })
+
+	if !bytes.Equal(rr.Body.Bytes(), expectedResponse) {
+		t.Errorf("handler returned unexpected response: got %v want %v", rr.Body.String(), expectedResponse)
+	} else {
+		fmt.Printf("GET Case 2 passed!!\n")
+	}**/
 
 	//case 3: list empty
+	email = "123@gmail.com"
+	location = "Paris"
+	payload = fmt.Sprintf(`{"Email": "%s", "Location": "%s"}`, email, location)
+	req, err = http.NewRequest("GET", "/updateDestination", strings.NewReader(payload))
+	if err != nil {
+		t.Errorf("Error: request could not be completed")
+	}
+	rr = httptest.NewRecorder()
+	r = mux.NewRouter()
+	r.HandleFunc("/updateDestination", h.UpdateDestination).Methods("GET")
+	r.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	} else {
+		fmt.Printf("GET Case 3 passed!!\n")
+	}
+
+	/**expectedResponse = []byte("Gainesville, Miami")
+	//expected response is an array of locations
+	var locations []models.SavedLocation := ({Email: })
+
+	if !bytes.Equal(rr.Body.Bytes(), expectedResponse) {
+		t.Errorf("handler returned unexpected response: got %v want %v", rr.Body.String(), expectedResponse)
+	} else {
+		fmt.Printf("GET Case 2 passed!!\n")
+	}**/
 
 }
