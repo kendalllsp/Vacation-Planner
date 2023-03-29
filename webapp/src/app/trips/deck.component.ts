@@ -38,10 +38,12 @@ export class TripsCardDeckComponent{
 
     const options = {
       headers: { 'Content-Type': 'application/json' },
-      body: { email, location }
+      body: { "Email": email,
+              "Location": location }
     };
 
     this.http.delete('http://localhost:8181/updateDestination', options).subscribe(() => {
+      window.location.reload()
       console.log("test")
     });
 

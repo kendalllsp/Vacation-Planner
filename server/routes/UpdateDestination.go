@@ -109,15 +109,24 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-
 		// Checking user table for user with email given
 		result := h.DB.First(&models.User{}, "Email = ?", requestBody["Email"].(string))
 
 		// If no user has given email
 		if result.RowsAffected == 0 {
 			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusOK)
-			w.Write([]byte("No user with the email address associated."))
+				w.WriteHeader(http.StatusOK)
+
+				// Creating new response body based on the situation and returning it
+
+				response := responseBody { Saved: false, Message: "No user with given email." }
+
+				jsonResponse, err1 := json.Marshal(response)
+				if err1 != nil {
+					http.Error(w, err1.Error(), http.StatusBadRequest)
+					return
+				}
+				w.Write(jsonResponse)
 		} else {
 			// Checking the savedLocations for a value with the email and location
 			result = h.DB.Where(&models.SavedLocation{Email: requestBody["Email"].(string), Location: requestBody["Location"].(string)}).First(&models.SavedLocation{})
