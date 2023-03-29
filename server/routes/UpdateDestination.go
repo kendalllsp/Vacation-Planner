@@ -202,7 +202,12 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 
 			} else {
 				// If Rows Affected (rows with email given) is 0, the user has no saved locations.
-				w.Write([]byte("User destination list is empty."))
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusOK)
+				
+				var strings [0]string
+
+				json.NewEncoder(w).Encode(strings)
 			}
 		}
 	} else {
