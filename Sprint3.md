@@ -32,8 +32,8 @@ This API integrates with the Yelp API to provide information to users about shop
 Parameters:
 - Request body is a JSON file in the following format:
 {
-"Email": "email@example.com",
-"Password" : "password"
+Email: "email@example.com",
+Password : "password"
 }
 
 Response: 
@@ -47,13 +47,13 @@ Response:
 Parameters:
 - Request body is a JSON file in the following format:
 {
-"Email": "email@example.com",
-"Password" : "password"
+Email: "email@example.com",
+Password : "password"
 }
 
 Response: 
 - Response is a JSON file in the following format:
-{ LoggedIn: true, Message: "User successfully logged in." }
+{ LoggedIn: true, Email: "email@example.com", Message: "User successfully logged in." }
 
 - LoggedIn value will register as false if the email is unrecognized or the email and password do not match.
 
@@ -86,19 +86,19 @@ Response:
 Parameters: 
 - Request body is a JSON file in the following format:
 {
-"Email": "email@example.com",
+Email: "email@example.com",
 }
 
 Response:
-- Function response is a byte slice, either stating "No user with the email address associated." or "User destination list is empty."
+- Function response is a byte slice that lists the users saved locations if it is populated, "User destination list is empty." if it is not, or states "No user with the email address associated." if both other conditions are false.
 
 ### **PUT** /updateDestination - Saves a new location in the database
 
 Parameters: 
 - Request body is a JSON file in the following format:
 {
-"Email": "email@example.com",
-"Location" : "exampleLocation"
+Email: "email@example.com",
+Location : "exampleLocation"
 }
 
 Response:
@@ -110,8 +110,8 @@ Response:
 Parameters: 
 - Request body is a JSON file in the following format:
 {
-"Email": "email@example.com",
-"Location" : "exampleLocation"
+Email: "email@example.com",
+Location : "exampleLocation"
 }
 
 Response:
