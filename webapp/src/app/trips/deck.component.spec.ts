@@ -3,34 +3,31 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { LoginComponent } from './login.component';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { TripsCardDeckComponent } from './deck.component';
 import { AppModule } from '../app.module';
 
-describe('LoginComponent', () =>  {
-    let component: LoginComponent;
-    let fixture: ComponentFixture<LoginComponent>;
+describe('TripsCardDeckComponent', () =>  {
+    let component: TripsCardDeckComponent;
+    let fixture: ComponentFixture<TripsCardDeckComponent>;
     let router: Router;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [LoginComponent],
-            imports: [AppModule, MatFormFieldModule, MatCardModule, MatToolbarModule, HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule]
+            declarations: [TripsCardDeckComponent],
+            imports: [AppModule, HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule]
         })
         .compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(LoginComponent);
+        fixture = TestBed.createComponent(TripsCardDeckComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
         router = TestBed.inject(Router);
     });
 
-    it('should create the login component', () => {
-        const fixture = TestBed.createComponent(LoginComponent);
+    it('should create the TripsCardDeckComponent component', () => {
+        const fixture = TestBed.createComponent(TripsCardDeckComponent);
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
     });
