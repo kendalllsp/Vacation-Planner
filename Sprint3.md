@@ -1,8 +1,8 @@
-# **Work Completed for Sprint 2:**
+# **Work Completed for Sprint 3:**
 
 - Created tests for frontend
 - Created 'logged in' status variable to detect when a user is logged in even when changing pages
-- Added ability to save locations to trips page
+- Added ability to load saved locations to trips page
 - Created new testing for added backend functionality
 
 # **Unit Tests:**
