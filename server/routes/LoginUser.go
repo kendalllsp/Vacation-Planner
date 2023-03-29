@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"vacation-planner/models"
+	"strings"
 )
 
 // Login user POST, using HTTP request body information for email and password
@@ -36,7 +37,7 @@ func (h DBRouter) LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	// Added a line to check the database if a user exist with same email given
 	existingUser := &models.User{}
-	result := h.DB.First(existingUser, "Email = ?", requestBody["Email"].(string))
+	result := h.DB.First(existingUser, "Email = ?", strings.ToLower(requestBody["Email"].(string)))
 
 	// Checking if the rows that have the email isn't 0 therefore somebody has the email
 	if result.RowsAffected != 0 {
@@ -46,7 +47,7 @@ func (h DBRouter) LoginUser(w http.ResponseWriter, r *http.Request) {
 			// Creating new response under LoginAttempt struct style
 			// Marshaling response as JSON and writing it as response
 			// Now including the Email string in the response
-			response := LoginAttempt { LoggedIn: false, Email: requestBody["Email"].(string), Message: "Email and password combination does not exist." }
+			response := LoginAttempt { LoggedIn: false, Email: strings.ToLower(requestBody["Email"].(string)), Message: "Email and password combination does not exist." }
 			jsonResponse, err1 := json.Marshal(response)
 			if err1 != nil {
 				http.Error(w, err1.Error(), http.StatusBadRequest)

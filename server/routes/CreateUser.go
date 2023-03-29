@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"vacation-planner/models"
+	"strings"
 )
 
 // Create user POST, using HTTP request body information for email and password
@@ -35,12 +36,12 @@ func (h DBRouter) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	// Added a line to check the database for any users with the same email as the new account
 
-	result := h.DB.First(&models.User{}, "Email = ?", requestBody["Email"].(string))
+	result := h.DB.First(&models.User{}, "Email = ?", strings.ToLower(requestBody["Email"].(string)))
 
 	// Checking if the rows that have the email is 0 therefore nobody has the email
 	if result.RowsAffected == 0 {
 		// Assigning Email and Password to new User
-		user.Email = requestBody["Email"].(string)
+		user.Email = strings.ToLower(requestBody["Email"].(string))
 		user.Password = requestBody["Password"].(string)
 
 		// Creating new user in the DB and checking for error

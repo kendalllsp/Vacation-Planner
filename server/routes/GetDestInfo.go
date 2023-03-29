@@ -148,9 +148,6 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
         Shopping: ShoppingList,
     }
 
-    // // Decoding request
-    // _ = json.NewDecoder(r.Body).Decode(&destination)
-
     // Returning destination object
     json.NewEncoder(w).Encode(destination)
 
