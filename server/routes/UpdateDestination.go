@@ -115,8 +115,18 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 		// If no user has given email
 		if result.RowsAffected == 0 {
 			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusOK)
-			w.Write([]byte("No user with the email address associated."))
+				w.WriteHeader(http.StatusOK)
+
+				// Creating new response body based on the situation and returning it
+
+				response := responseBody { Saved: false, Message: "No user with given email." }
+
+				jsonResponse, err1 := json.Marshal(response)
+				if err1 != nil {
+					http.Error(w, err1.Error(), http.StatusBadRequest)
+					return
+				}
+				w.Write(jsonResponse)
 		} else {
 			// Checking the savedLocations for a value with the email and location
 			result = h.DB.Where(&models.SavedLocation{Email: requestBody["Email"].(string), Location: requestBody["Location"].(string)}).First(&models.SavedLocation{})
@@ -131,34 +141,43 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 				// Setting headers
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusOK)
-		
-				// Not generating accurate response data(?), looking to meet to come to concensus on how exactly
-				// we plan on passing information back and forth
-				//
-				// Essentially I would be encoding some sort of response with 
-				// "json.NewEncoder(w).Encode(response)"
-				//
-				// For now, I'm just printing validation strings.
 
-				w.Write([]byte("Location successfully deleted."))
+				// Creating new response body based on the situation and returning it
+
+				response := responseBody { Saved: false, Message: "Location successfuly deleted." }
+
+				jsonResponse, err1 := json.Marshal(response)
+				if err1 != nil {
+					http.Error(w, err1.Error(), http.StatusBadRequest)
+					return
+				}
+				w.Write(jsonResponse)
 
 			} else {
-				// If Rows Affected (rows with email given) is 0, therefore the user does not have said
-				// location saved to be deleted, returning validation string
-				w.Write([]byte("Account does not have location saved in order to be deleted."))
+				// Setting headers
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusOK)
+
+				// Creating new response body based on the situation and returning it
+
+				response := responseBody { Saved: false, Message: "No saved location by the specfied user matches the location given." }
+
+				jsonResponse, err1 := json.Marshal(response)
+				if err1 != nil {
+					http.Error(w, err1.Error(), http.StatusBadRequest)
+					return
+				}
+				w.Write(jsonResponse)
 			}
 		}
 	} else if r.Method == "GET" {
 
-		// Decoding request body for the email of the accounts destination list
-		err := json.NewDecoder(r.Body).Decode(&requestBody)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
+		// Changed GET request to refer to url parameters
+		// and changed the rest of the GET's email references to this variable
+		email := r.URL.Query().Get("Email")
 
 		// Checking the database for a user with the same email as the account trying to update location list
-		result := h.DB.First(&models.User{}, "Email = ?", requestBody["Email"].(string))
+		result := h.DB.First(&models.User{}, "Email = ?", email)
 
 		// If there is no user with said email, return error
 		if result.RowsAffected == 0 {
@@ -169,7 +188,7 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 			// Start a new variable that is a slice of saved locations, to add the specific users locations to
 			var locations []models.SavedLocation
 			// Finding all rows within Saved Locations with the given email
-			h.DB.Where("email = ?", requestBody["Email"].(string)).Find(&locations)
+			h.DB.Where("email = ?", email).Find(&locations)
 
 			// Checking if the rows that have the email is not 0 therefore they have saved locations
 			if len(locations) != 0 {
@@ -183,7 +202,12 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 
 			} else {
 				// If Rows Affected (rows with email given) is 0, the user has no saved locations.
-				w.Write([]byte("User destination list is empty."))
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusOK)
+				
+				var strings [0]string
+
+				json.NewEncoder(w).Encode(strings)
 			}
 		}
 	} else {

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 
 @Component({
@@ -6,4 +6,9 @@ import {Component} from '@angular/core';
   templateUrl: 'card.component.html',
   styleUrls: ['card.component.scss'],
 })
-export class TripsCardComponent {}
+export class TripsCardComponent {
+
+  @Input() location: string = '';
+  @Input() date: string = '';
+
+}
