@@ -19,9 +19,10 @@ func Connect() (*gorm.DB, error) {
 		log.Fatalln(err)
 	}
 
-	//test migrating User struct
+	// Auto Migrating User and SavedLocation structs
 	db.AutoMigrate(&models.User{}, &models.SavedLocation{})
 
+	// Visuals for Successful Connection
 	fmt.Println("successful connection")
 
 	// Return potential error or nil as well as DB

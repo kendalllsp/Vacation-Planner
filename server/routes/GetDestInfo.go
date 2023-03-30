@@ -14,16 +14,16 @@ import (
 
 func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
 
+    // Setting the Headers for the response type to be JSON
     w.Header().Set("Content-Type", "application/json")
 
-    // Using godotenv to hide API keys
-
+    // Loading the API key from a private .env file with GoDotEnv
     err := godotenv.Load()
     if err != nil {
         log.Fatal("Could not load .env file")
     }
 
-    // Setting key var to YELP
+    // Setting the local API key value
     yelpAPIKey := os.Getenv("YELP_REST_API_KEY")
 
     // Taking the location value typed by the user, to use for computations
@@ -33,22 +33,24 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
     // Starting new Yelp client
     yelp := yfusion.NewYelpFusion(yelpAPIKey)
 
-    // Setting all relevant filters for specific search
+    // Setting all relevant filters for Fashion store search
     businessSearch := &yfusion.BusinessSearchParams{}
     businessSearch.SetLocation(destinationLocation)
     businessSearch.SetTerm("fashion")
     businessSearch.SetLimit(10)
     businessSearch.SetRadius(15000)
     businessSearch.SetSortBy("rating")
+
+    // Searching based off of previous filters for Fashion search and error checking
     shoppingResult, err := yelp.SearchBusiness(businessSearch)
     if err != nil {
         fmt.Println("Fashion clothing business search could not be completed.")
     }
 
-    // Creating new slice of size to for the top 10 rated Shopping businesses
+    // Creating new slice of size 10 for the top 10 rated Fashion Shopping businesses
     var ShoppingList [10]models.Business
 
-    // Looping through results of the search to populate slice of shopping businesses
+    // Looping through results of the search to populate slice of fashion shopping businesses
     for i, b := range shoppingResult.Businesses {
         ShoppingList[i].Name = b.Name
         ShoppingList[i].Price = b.Price
@@ -62,12 +64,14 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
         }
     }
 
-    // Entertainment search
+    // Entertainment search filters
     businessSearch.SetLocation(destinationLocation)
     businessSearch.SetTerm("arts")
     businessSearch.SetLimit(10)
     businessSearch.SetRadius(15000)
     businessSearch.SetSortBy("rating")
+
+    // Entertainment search results based on before mentioned filters for Entertainment
     entertainmentResult, err := yelp.SearchBusiness(businessSearch)
     if err != nil {
         fmt.Println("X")
@@ -85,17 +89,20 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
         EntertainmentList[i].Location = b.Location.Address1
         EntertainmentList[i].Type = b.Categories[0].Title
 
+        // "Not listed" when the price is empty
         if (len(EntertainmentList[i].Price) < 1) {
             EntertainmentList[i].Price = "Not listed"
         }
     }
 
-    // Food search
+    // Food search filters
     businessSearch.SetLocation(destinationLocation)
     businessSearch.SetTerm("food")
     businessSearch.SetLimit(10)
     businessSearch.SetRadius(15000)
     businessSearch.SetSortBy("rating")
+
+    // Food search results based off of food search filters
     restaurantResult, err := yelp.SearchBusiness(businessSearch)
     if err != nil {
         fmt.Println("X")
@@ -112,6 +119,7 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
         RestaurantList[i].Location = b.Location.Address1
         RestaurantList[i].Type = b.Categories[0].Title
 
+        // "Not listed" when the price is empty
         if (len(RestaurantList[i].Price) < 1) {
             RestaurantList[i].Price = "Not listed"
         }
@@ -140,6 +148,7 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
             }
         }
     }
+
     // Creating destination object of which we will return
     destination := &models.Destination{
         Location: [3]string{city, state, country},
@@ -148,10 +157,6 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
         Shopping: ShoppingList,
     }
 
-    // // Decoding request
-    // _ = json.NewDecoder(r.Body).Decode(&destination)
-
     // Returning destination object
     json.NewEncoder(w).Encode(destination)
-
 }

@@ -32,7 +32,7 @@ func main() {
 	// Created a POST to login a user while using username and password. Post ensures the info is not on the URL
 	r.HandleFunc("/loginUser", h.LoginUser).Methods("POST")
 
-	// Created a new route that can take 3 HTTP method requests to update locations in the savedLocation table for users to have their own Destination Lists
+	// Created a new route that can take 3 HTTP method requests to handle saved locations in the savedLocation table for users to have their own Destination Lists
 	r.HandleFunc("/updateDestination", h.UpdateDestination).Methods("POST")
 	r.HandleFunc("/updateDestination", h.UpdateDestination).Methods("DELETE")
 	r.HandleFunc("/updateDestination", h.UpdateDestination).Methods("GET")
