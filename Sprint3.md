@@ -10,6 +10,12 @@
 # **Unit Tests:**
 
 #### Frontend:
+- home component test
+- login component test
+- signup component test
+- navbar component test
+- trip component and subcomponent tests
+- navbar routing test (in development)
 
 #### Backend:
 - create user function test
