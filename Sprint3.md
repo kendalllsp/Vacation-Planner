@@ -16,6 +16,7 @@
 - login user function test
 - get destination function test
 - database connection test
+- update destination test
 
 # **Updated Backend Documentation:**
 
