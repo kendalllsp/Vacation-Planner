@@ -41,8 +41,8 @@ This API integrates with the Yelp API to provide information to users about shop
 Parameters:
 - Request body is a JSON file in the following format:
 {
-Email: "email@example.com",
-Password : "password"
+        Email: "email@example.com",
+        Password : "password"
 }
 
 Response: 
@@ -50,14 +50,13 @@ Response:
 { Success: true, Message: "User succesfully created account" }
 
 
-
 ### **POST** /loginUser - Authenticates a user login
 
 Parameters:
 - Request body is a JSON file in the following format:
 {
-Email: "email@example.com",
-Password : "password"
+        Email: "email@example.com",
+        Password : "password"
 }
 
 Response: 
@@ -88,30 +87,31 @@ Response:
 - Each 'list' is of length 10, and contains the names of 10 locations along with their ratings, address, type, and price.
 
 
-## Endpoints under development:
-
 ### **GET** /updateDestination - Returns all saved destinations
 
 Parameters: 
-- Request body is a JSON file in the following format:
-{
-Email: "email@example.com",
-}
+- Function takes in user's email address as a query parameter in the URL like so:
+ /updateDestination?Email=email@example.com
 
 Response:
-- Function response is a byte slice that lists the users saved locations if it is populated, "User destination list is empty." if it is not, or states "No user with the email address associated." if both other conditions are false.
+- Function returns a JSON file with all loctions stored in an array, where each location is in the format:
+{
+        Email: "email@example.com",
+        Location : "exampleLocation"
+}
 
 ### **PUT** /updateDestination - Saves a new location in the database
 
 Parameters: 
 - Request body is a JSON file in the following format:
 {
-Email: "email@example.com",
-Location : "exampleLocation"
+        Email: "email@example.com",
+        Location : "exampleLocation"
 }
 
 Response:
-- Function response is a byte slice, either stating "New location successfully saved." or "Location already saved."
+- Response is a JSON file in the following format:
+{ Saved: true, Message: "New location successfully saved." }
 
 
 ### **DELETE** /updateDestination - Deletes a user's saved location
@@ -119,15 +119,15 @@ Response:
 Parameters: 
 - Request body is a JSON file in the following format:
 {
-Email: "email@example.com",
-Location : "exampleLocation"
+        Email: "email@example.com",
+        Location : "exampleLocation"
 }
 
 Response:
-- Function response is a byte slice, either stating "Location successfully deleted." or "Account does not have location saved in order to be deleted."
-
+- Response is a JSON file in the following format:
+{ Saved: false, Message: "Location successfuly deleted." }
 
 
 # **Demo Video:**
 This is a link to a video detailing the current functionality of our integrated application:
-
+https://drive.google.com/file/d/1YiQjrHlmJaIR_7vMrnig3KMlpwodHUIu/view?usp=sharing
