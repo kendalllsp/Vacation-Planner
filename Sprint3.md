@@ -2,8 +2,10 @@
 
 - Created tests for frontend
 - Created 'logged in' status variable to detect when a user is logged in even when changing pages
-- Added ability to load saved locations to trips page
-- Created new testing for added backend functionality
+- Added ability for user to save and delete locations
+- Added ability for user to see list of saved destions
+- Created new unit testing for the added backend functionality
+- Created new UI for search results page
 
 # **Unit Tests:**
 
