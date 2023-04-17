@@ -23,6 +23,11 @@ func main() {
 
 	r := mux.NewRouter()
 
+	// Created a new route that can take 3 HTTP method requests to handle saved businesses in the savedBusinesses table for users to have businesses saved on their own Destination Lists
+	r.HandleFunc("/updateBusinessList", h.UpdateBusinessList).Methods("POST")
+	r.HandleFunc("/updateBusinessList", h.UpdateBusinessList).Methods("DELETE")
+	r.HandleFunc("/updateBusinessList", h.UpdateBusinessList).Queries("Email", "{email}", "Location", "{location}").Methods("GET")
+
 	// Created POST request for creating a user in the database
 	r.HandleFunc("/createUser", h.CreateUser).Methods("POST")
 

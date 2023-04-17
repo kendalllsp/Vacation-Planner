@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"vacation-planner/models"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -20,7 +21,7 @@ func Connect() (*gorm.DB, error) {
 	}
 
 	// Auto Migrating User and SavedLocation structs
-	db.AutoMigrate(&models.User{}, &models.SavedLocation{})
+	db.AutoMigrate(&models.User{}, &models.SavedLocation{}, &models.SavedBusiness{})
 
 	// Visuals for Successful Connection
 	fmt.Println("successful connection")
