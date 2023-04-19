@@ -30,6 +30,7 @@ export class TripsService {
     return this.http.get<any>(this.tripsUrl.concat("newDestination/", trip.dest));
   }
 
+
   private log(message: string) {
     this.messageService.add(`HeroService: ${message}`);
   }

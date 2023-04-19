@@ -23,7 +23,7 @@ import { SignupComponent } from './signup/signup.component';
 
 import { TripsComponent } from './trips/trips.component';
 import { TripsCardComponent } from './trips/card.component';
-import { TripsCardDeckComponent } from './trips/deck.component';
+import { TripsCardDeckComponent, DialogDataExampleDialog } from './trips/deck.component';
 
 import { MessageService } from './message.service';
 
@@ -41,6 +41,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     HomeLoggedInComponent,
     TripSearchComponent,
     DestinationResultDialog,
+    DialogDataExampleDialog,
     LoginComponent,
     SignupComponent,
     TripsComponent,
