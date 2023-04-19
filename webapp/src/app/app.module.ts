@@ -23,7 +23,7 @@ import { SignupComponent } from './signup/signup.component';
 
 import { TripsComponent } from './trips/trips.component';
 import { TripsCardComponent } from './trips/card.component';
-import { TripsCardDeckComponent } from './trips/deck.component';
+import { TripsCardDeckComponent, DialogDataExampleDialog } from './trips/deck.component';
 
 import { MessageService } from './message.service';
 
@@ -42,6 +42,7 @@ import { RouterLinkWithHref } from '@angular/router';
     HomeLoggedInComponent,
     TripSearchComponent,
     DestinationResultDialog,
+    DialogDataExampleDialog,
     LoginComponent,
     SignupComponent,
     TripsComponent,

@@ -45,6 +45,7 @@ export class TripSearchComponent {
     if (!dest) {return;}
     this.tripsService.getTrip({dest, start, end} as Trip).pipe(
       map((response) => {
+        console.log(response)
         this.destinationResults = response;
       })
     )
@@ -72,7 +73,6 @@ export class DestinationResultDialog {
   saveDestination() {
     if(this.isBookmarked == faBookmark){
       this.isBookmarked = faBookmarkSolid;
-    }
     
     // Checking if the loggedIn sessionStorage value has been set
     if (sessionStorage.getItem('loggedIn') != null)
@@ -82,25 +82,55 @@ export class DestinationResultDialog {
       var location = this.data.results.Location[0] + ", " + this.data.results.Location[1]
       const params = { Email: sessionStorage.getItem('loggedIn'), Location: location, Start: this.data.results.Start, End: this.data.results.End }
 
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      };
-  
-      // Calling the backend with the post request to create new destination in the list with the location and users email
-      this.http.post("http://localhost:8181/updateDestination", params, httpOptions)
-      .subscribe(response => {
-          // Print request response to JS console
-          console.log(response)
-      });
+        const httpOptions = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+          })
+        };
+    
+        // Calling the backend with the post request to create new destination in the list with the location and users email
+        this.http.post("http://localhost:8181/updateDestination", params, httpOptions)
+        .subscribe(response => {
+            // Print request response to JS console
+            console.log(response)
+        });
+      }
+      else
+      {
+        // Logging error message if the user is not logged in.
+        console.log("You have to log in, dork.")
+      }
     }
-    else
-    {
-      // Logging error message if the user is not logged in.
-      console.log("You have to log in, dork.")
+    else {
+      this.isBookmarked = faBookmark;
+       // Checking if the loggedIn sessionStorage value has been set
+       if (sessionStorage.getItem('loggedIn') != null)
+       {
+         // Setting the location from the trip component to be passed to the backend
+         // Using the email from the loggedIn variable
+         var location = this.data.results.Location[0] + ", " + this.data.results.Location[1]
+         var email = sessionStorage.getItem("loggedIn")
+         
+         const httpOptions = {
+           headers: new HttpHeaders({ 'Content-Type': 'application/json'}),
+           body: { "Email": email,
+                  "Location": location }
+         };
+     
+         // Calling the backend with the post request to create new destination in the list with the location and users email
+         this.http.delete("http://localhost:8181/updateDestination", httpOptions)
+         .subscribe(response => {
+             // Print request response to JS console
+             console.log(response)
+         });
+       }
+       else
+       {
+         // Logging error message if the user is not logged in.
+         console.log("You have to log in, dork.")
+       }
+      }
     }
   }
 
   
-}

@@ -35,6 +35,7 @@ export class TripsService {
     return this.http.get<any>('http://localhost:8181/newDestination', { params });
   }
 
+
   private log(message: string) {
     this.messageService.add(`HeroService: ${message}`);
   }
