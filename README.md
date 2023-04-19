@@ -29,6 +29,16 @@ Our selection of local spots is based on a filtered list pulled from the YelpAPI
 
 ![Login_page](/screenshots/login_page.png)
 
+#### Trips Page
+
+![trips_page](/screenshots/trips_page.png)
+
+#### Trip Dialog
+
+![trip_dialog](/screenshots/trip_dialog.png)
+
+
+
 
 ## Development
 
