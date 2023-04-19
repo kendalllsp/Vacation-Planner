@@ -12,8 +12,7 @@ type Business struct {
     Type        string  `json: "type"`
 }
 
-// Removed gorm.Model for Destination because it won't be saved, only the name of the destination
-// Removed ImageLink because it's not being used yet
+
 type Destination struct {
     Location        [3]string       `json: "location"`
     Restaurants     [10]Business    `json: "restaurants"`
@@ -26,7 +25,6 @@ type SavedLocation struct {
     Location    string  `json: "location"`
 }
 
-// introducing user type for database
 type User struct {
     gorm.Model
     Email           string      `json: "email"          gorm: "primaryKey"`

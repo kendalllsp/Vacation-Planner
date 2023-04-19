@@ -32,7 +32,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,7 +56,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   providers: [
     MessageService
