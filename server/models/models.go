@@ -17,6 +17,8 @@ type Destination struct {
 	Restaurants   [10]Business `json: "restaurants"`
 	Entertainment [10]Business `json: "entertainment"`
 	Shopping      [10]Business `json: "shopping"`
+	Start         string       `json: "start"`
+	End           string       `json: "end"`
 }
 
 type SavedBusiness struct {
@@ -32,6 +34,8 @@ type SavedBusiness struct {
 type SavedLocation struct {
 	Email    string `json: "email"`
 	Location string `json: "location"`
+	Start    string `json: "start"`
+	End      string `json: "end"`
 }
 
 type User struct {

@@ -16,8 +16,8 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 
 	// Initializing Struct template for JSON response data
 	type responseBody struct {
-		Saved 	bool 	`json: "saved"`
-		Message string 	`json: "message"`
+		Saved   bool   `json: "saved"`
+		Message string `json: "message"`
 	}
 
 	// If POST, then user is adding to their location list
@@ -42,9 +42,9 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 			// Setting headers
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
-			
+
 			// Creating new response body based on the template struct, and the situation and returning it
-			response := responseBody { Saved: false, Message: "No user with given email." }
+			response := responseBody{Saved: false, Message: "No user with given email."}
 
 			// Packaging to JSON
 			jsonResponse, err1 := json.Marshal(response)
@@ -67,7 +67,9 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 				// Assigning Email and Location to new location
 				savedLocation.Email = requestBody["Email"].(string)
 				savedLocation.Location = requestBody["Location"].(string)
-	
+				savedLocation.Start = requestBody["Start"].(string)
+				savedLocation.End = requestBody["End"].(string)
+
 				// Creating new location in the DB and checking for error
 				if newLocation := h.DB.Create(&savedLocation); newLocation.Error != nil {
 					fmt.Println(newLocation.Error)
@@ -78,7 +80,7 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(http.StatusOK)
 
 				// Creating new response body based on the situation and returning it
-				response := responseBody { Saved: true, Message: "New location successfully saved." }
+				response := responseBody{Saved: true, Message: "New location successfully saved."}
 
 				// Packaging into JSON
 				jsonResponse, err1 := json.Marshal(response)
@@ -92,9 +94,9 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 
 			} else {
 				// If Rows Affected (rows with email given) is not 0, user with said email has already saved the location given.
-				
+
 				// Creating new response body based on the situation and returning it
-				response := responseBody { Saved: false, Message: "User already has location saved." }
+				response := responseBody{Saved: false, Message: "User already has location saved."}
 
 				// Packaging to JSON
 				jsonResponse, err1 := json.Marshal(response)
@@ -108,7 +110,7 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 
 			}
 		}
-	// If DELETE, the user is deleting from their location list
+		// If DELETE, the user is deleting from their location list
 	} else if r.Method == "DELETE" {
 
 		// Decoding body of the http request for the information of the wanted to be deleted location and error checking
@@ -129,7 +131,7 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusOK)
 
 			// Creating new response body based on the situation and returning it
-			response := responseBody { Saved: false, Message: "No user with given email." }
+			response := responseBody{Saved: false, Message: "No user with given email."}
 
 			// Packaging response to JSON
 			jsonResponse, err1 := json.Marshal(response)
@@ -137,7 +139,7 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, err1.Error(), http.StatusBadRequest)
 				return
 			}
-			
+
 			// Returning JSON response
 			w.Write(jsonResponse)
 
@@ -160,7 +162,7 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(http.StatusOK)
 
 				// Creating new response body based on the situation and returning it
-				response := responseBody { Saved: false, Message: "Location successfuly deleted." }
+				response := responseBody{Saved: false, Message: "Location successfuly deleted."}
 
 				// Packaging to JSON
 				jsonResponse, err1 := json.Marshal(response)
@@ -175,13 +177,12 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 			} else {
 				// Else the rows that have the email/location is 0 therefore they have not already saved given location
 
-
 				// Setting headers
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusOK)
 
 				// Creating new response body based on the situation and returning it
-				response := responseBody { Saved: false, Message: "No saved location by the specfied user matches the location given." }
+				response := responseBody{Saved: false, Message: "No saved location by the specfied user matches the location given."}
 
 				// Packaging to JSON
 				jsonResponse, err1 := json.Marshal(response)
@@ -189,12 +190,12 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 					http.Error(w, err1.Error(), http.StatusBadRequest)
 					return
 				}
-				
+
 				// Returning JSON
 				w.Write(jsonResponse)
 			}
 		}
-	// If GET, the user is attempting to react the "/trips" page and we return all saved locations for the user
+		// If GET, the user is attempting to react the "/trips" page and we return all saved locations for the user
 	} else if r.Method == "GET" {
 
 		// Accessing the user's email from the URL parameters (GET)
@@ -227,7 +228,7 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 				// Setting headers
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusOK)
-		
+
 				// Send the location slice to the front end
 				json.NewEncoder(w).Encode(locations)
 
@@ -237,7 +238,7 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 				// Setting header
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusOK)
-				
+
 				// Initializing an empty string slice to avoid front end errors of an empty response
 				var strings [0]string
 

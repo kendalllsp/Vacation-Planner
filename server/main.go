@@ -32,7 +32,7 @@ func main() {
 	r.HandleFunc("/createUser", h.CreateUser).Methods("POST")
 
 	// Created GET request to get relevant travel information for the user
-	r.HandleFunc("/newDestination/{location}", h.GetDestInfo).Methods("GET")
+	r.HandleFunc("/newDestination/{location}/{start}/{end}", h.GetDestInfo).Methods("GET")
 
 	// Created a POST to login a user while using username and password. Post ensures the info is not on the URL
 	r.HandleFunc("/loginUser", h.LoginUser).Methods("POST")
