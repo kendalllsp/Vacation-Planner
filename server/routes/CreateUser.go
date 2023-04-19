@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"vacation-planner/models"
 )
 
@@ -44,7 +45,7 @@ func (h DBRouter) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	// 5.
 	if result.RowsAffected == 0 {
-		user.Email = requestBody["Email"].(string)
+		user.Email = strings.ToLower(requestBody["Email"].(string))
 		user.Password = requestBody["Password"].(string)
 		if newUser := h.DB.Create(&user); newUser.Error != nil {
 			// 6.

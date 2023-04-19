@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"vacation-planner/models"
 )
 
@@ -33,8 +34,8 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Checking the database for the first user with the same email as the account trying to update location list
-		result := h.DB.First(&models.User{}, "Email = ?", requestBody["Email"].(string))
+		// Checking the database for a user with the same email as the account trying to update location list
+		result := h.DB.First(&models.User{}, "Email = ?", strings.ToLower(requestBody["Email"].(string)))
 
 		// If there is no user with said email, return error
 		if result.RowsAffected == 0 {
@@ -58,14 +59,14 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 
 		} else {
 
-			// Checking the savedLocations for a value with the email and location, meaning the user has already saved the location
-			result = h.DB.Where(&models.SavedLocation{Email: requestBody["Email"].(string), Location: requestBody["Location"].(string)}).First(&models.SavedLocation{})
+			// Checking the savedLocations for a value with the email and location, meaning the wrong call was called.. meaning to delete already saved location
+			result = h.DB.Where(&models.SavedLocation{Email: strings.ToLower(requestBody["Email"].(string)), Location: requestBody["Location"].(string)}).First(&models.SavedLocation{})
 
 			// Checking if the rows that have the email and location is 0 therefore they have not already saved given location
 			if result.RowsAffected == 0 {
 
 				// Assigning Email and Location to new location
-				savedLocation.Email = requestBody["Email"].(string)
+				savedLocation.Email = strings.ToLower(requestBody["Email"].(string))
 				savedLocation.Location = requestBody["Location"].(string)
 				savedLocation.Start = requestBody["Start"].(string)
 				savedLocation.End = requestBody["End"].(string)
@@ -121,7 +122,7 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Checking user table for user with email given
-		result := h.DB.First(&models.User{}, "Email = ?", requestBody["Email"].(string))
+		result := h.DB.First(&models.User{}, "Email = ?", strings.ToLower(requestBody["Email"].(string)))
 
 		// If rows = 0, then no user has the given email
 		if result.RowsAffected == 0 {
@@ -147,7 +148,7 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 			// There is a user with the given email in the database
 
 			// Checking the savedLocations for a value with the email and location
-			result = h.DB.Where(&models.SavedLocation{Email: requestBody["Email"].(string), Location: requestBody["Location"].(string)}).First(&models.SavedLocation{})
+			result = h.DB.Where(&models.SavedLocation{Email: strings.ToLower(requestBody["Email"].(string)), Location: requestBody["Location"].(string)}).First(&models.SavedLocation{})
 
 			// If the rows that have the email/location is not 0 therefore they have already saved given location
 			if result.RowsAffected != 0 {

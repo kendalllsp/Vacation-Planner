@@ -15,7 +15,6 @@ import (
 // 7. Create, package, and write success response if given password matches the saved password.
 // 8. Create, package, and write failed response if no user in database has the given email.
 
-// Login user POST, using HTTP request body information for email and password
 func (h DBRouter) LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	// 1.
@@ -46,7 +45,7 @@ func (h DBRouter) LoginUser(w http.ResponseWriter, r *http.Request) {
 
 		// 5.
 		if existingUser.Password != requestBody["Password"].(string) {
-
+    
 			// 6.
 			response := LoginAttempt{LoggedIn: false, Email: requestBody["Email"].(string), Message: "Email and password combination does not exist."}
 			jsonResponse, err1 := json.Marshal(response)
@@ -54,11 +53,12 @@ func (h DBRouter) LoginUser(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, err1.Error(), http.StatusBadRequest)
 				return
 			}
-			w.Header().Set("Content-Type", "application/json")
+      w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
 			w.Write(jsonResponse)
-
-		} else {
+      
+    } else {
+    
 			// 7.
 			response := LoginAttempt{LoggedIn: true, Email: requestBody["Email"].(string), Message: "User successfully logged in."}
 			jsonResponse, err2 := json.Marshal(response)
@@ -72,6 +72,7 @@ func (h DBRouter) LoginUser(w http.ResponseWriter, r *http.Request) {
 
 		}
 	} else {
+  
 		// 8.
 		response := LoginAttempt{LoggedIn: false, Email: requestBody["Email"].(string), Message: "Email not in use in our userbase."}
 		jsonResponse, err3 := json.Marshal(response)
