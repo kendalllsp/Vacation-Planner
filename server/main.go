@@ -23,21 +23,21 @@ func main() {
 
 	r := mux.NewRouter()
 
-	// Created a new route that can take 3 HTTP method requests to handle saved businesses in the savedBusinesses table for users to have businesses saved on their own Destination Lists
+	// Route that can take 3 HTTP method requests to handle saved businesses in the savedBusinesses table for users to have businesses saved on their own Destination Lists
 	r.HandleFunc("/updateBusinessList", h.UpdateBusinessList).Methods("POST")
 	r.HandleFunc("/updateBusinessList", h.UpdateBusinessList).Methods("DELETE")
 	r.HandleFunc("/updateBusinessList", h.UpdateBusinessList).Queries("Email", "{email}", "Location", "{location}").Methods("GET")
 
-	// Created POST request for creating a user in the database
+	// POST request for creating a user in the database
 	r.HandleFunc("/createUser", h.CreateUser).Methods("POST")
 
-	// Created GET request to get relevant travel information for the user
+	// GET request to get relevant travel information for the user
 	r.HandleFunc("/newDestination/{location}/{start}/{end}", h.GetDestInfo).Methods("GET")
 
-	// Created a POST to login a user while using username and password. Post ensures the info is not on the URL
+	// POST to login a user while using username and password. Post ensures the info is not on the URL
 	r.HandleFunc("/loginUser", h.LoginUser).Methods("POST")
 
-	// Created a new route that can take 3 HTTP method requests to handle saved locations in the savedLocation table for users to have their own Destination Lists
+	// New route that can take 3 HTTP method requests to handle saved locations in the savedLocation table for users to have their own Destination Lists
 	r.HandleFunc("/updateDestination", h.UpdateDestination).Methods("POST")
 	r.HandleFunc("/updateDestination", h.UpdateDestination).Methods("DELETE")
 	r.HandleFunc("/updateDestination", h.UpdateDestination).Methods("GET")
