@@ -30,6 +30,7 @@ import { MessageService } from './message.service';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { RouterLinkWithHref } from '@angular/router';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    RouterLinkWithHref
   ],
   providers: [
     MessageService

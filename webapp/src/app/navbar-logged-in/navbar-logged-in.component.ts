@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { faSearch  } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+import { Routes } from "@angular/router"
+import { LoginComponent } from '../login/login.component';
+import { TripsCardDeckComponent } from '../trips/deck.component';
 
 @Component({
   selector: 'app-navbar-logged-in',
@@ -24,3 +27,8 @@ export class NavbarLoggedInComponent {
     }
   }
 }
+
+export const routes: Routes = [
+  {path:'login', component: LoginComponent}, 
+  {path: 'trips', component: TripsCardDeckComponent}
+];

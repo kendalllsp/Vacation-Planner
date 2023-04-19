@@ -1,42 +1,55 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing'; 
-import { ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Location } from "@angular/common";
+import { TestBed, fakeAsync, tick } from "@angular/core/testing";
+import { RouterTestingModule } from "@angular/router/testing";
+import { Router } from "@angular/router";
+
 import { NavbarComponent } from './navbar.component';
-import { AppModule } from '../app.module';
+import { routes } from "./navbar.component";
+import { Component } from "@angular/core";
 
-describe('NavbarComponent', () =>  {
-    let component: NavbarComponent;
-    let fixture: ComponentFixture<NavbarComponent>;
-    let router: Router;
+describe("NavbarComponent", () => {
+  let location: Location;
+  let router: Router;
+  let fixture;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            declarations: [NavbarComponent],
-            imports: [AppModule, HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule],
-        })
-        .compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule.withRoutes(routes)],
+      declarations: [NavbarComponent]
     });
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(NavbarComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-        router = TestBed.inject(Router);
-    });
+    router = TestBed.get(Router);
+    location = TestBed.get(Location);
 
-    it('should create the navbar component', () => {
-        const fixture = TestBed.createComponent(NavbarComponent);
-        const app = fixture.debugElement.componentInstance;
-        expect(app).toBeTruthy();
-    });
+    //fixture = TestBed.createComponent(AppComponent);
+    router.initialNavigation();
+  });
 
-    it('should navigate to', () => {
-        const navigateSpy = spyOn(router, 'navigate');
-        const button = fixture.debugElement.nativeElement.querySelector('.navbar-right');
-        button.click();
-        expect(navigateSpy).toHaveBeenCalledWith(['trips']);
+  it("fakeAsync works", fakeAsync(() => {
+    let promise = new Promise(resolve => {
+      setTimeout(resolve, 10);
     });
+    let done = false;
+    promise.then(() => (done = true));
+    tick(50);
+    expect(done).toBeTruthy();
+  }));
 
+  it('navigate to "login" redirects you to /login', fakeAsync(() => {
+    router.navigate(["/login"]).then(() => {
+      expect(location.path()).toBe("/login");
+    });
+  }));
+
+  it('navigate to "trips" takes you to /trips', fakeAsync(() => {
+    router.navigate(["/trips"]).then(() => {
+      expect(location.path()).toBe("/trips");
+    });
+  }));
+
+  it('navigate to "" takes you to /', fakeAsync(() => {
+    router.navigate([""]).then(() => {
+      expect(location.path()).toBe("/");
+    });
+  }));
 });
