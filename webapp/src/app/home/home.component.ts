@@ -7,6 +7,9 @@ import {FormControl} from '@angular/forms';
 // Added the Angular Router so that if the user has successfully logged in, we can route them to the trips
 // page for the example implementation.
 import { Router } from '@angular/router';
+import { Routes } from "@angular/router"
+import { LoginComponent } from '../login/login.component';
+import { TripsCardDeckComponent } from '../trips/deck.component';
 
 /**
  * @title Basic grid-list
@@ -38,3 +41,8 @@ export class HomeComponent {
     }
   }
 }
+
+export const routes: Routes = [
+  {path:'login', component: LoginComponent}, 
+  {path: 'trips', component: TripsCardDeckComponent}
+];

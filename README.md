@@ -1,13 +1,9 @@
 
 # CEN3031: Travel Planner
 
-We are building a Travel Planner that allows the user to type in where they want to go, and what month of the year they're planning on going. 
-Then our program will output the recent weather trends over the last couple years, 
-local food/entertainment spots with the best reviews, etc. 
-If results haven’t been determined for that destination and time frame, 
-we will fetch the info and input it in the database. 
-If it has already been searched (destination and month) then we can search the database for the already fetched information. Using OpenWeatherAPI, YelpAI, and more(TBD), we will be able to create a seamless interface for our travel-ready users.
-
+Welcome to Travel Planner a web application that built to make planning vacations easy. The main search bar allows the user to look up where they want to go, along with their prefered dates of travel. 
+Then Travel Planner will output the local restaurants, shopping, and entertainment spots with the best reviews. 
+Our selection of local spots is based on a filtered list pulled from the YelpAPI. Users can save destinations and see their different trips in one dashboard. 
 
 ## Status
 ![Open Issues](https://img.shields.io/github/issues/leonleonardo/cen3031) ![Closed Issues](https://img.shields.io/github/issues-closed/leonleonardo/cen3031) ![Open Pull Requests](https://img.shields.io/github/issues-pr/leonleonardo/cen3031)
@@ -22,6 +18,17 @@ If it has already been searched (destination and month) then we can search the d
 #### Frontend team
 - [Richard Cusolito](https://www.github.com/rickcuso88)
 - [Leonardo Leon](https://www.github.com/leonleonardo)
+
+## Screenshots
+
+#### Landing Page
+
+![Landing_page](/screenshots/landing_page.png)
+
+#### Login Page
+
+![Login_page](/screenshots/login_page.png)
+
 
 ## Development
 
@@ -38,7 +45,6 @@ go version
 npm --version
 docker -v
 ```
-#### Initializing backend
 
 Navigate to the `server` folder 
 

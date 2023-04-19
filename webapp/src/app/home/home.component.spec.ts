@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing'; 
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormsModule } from '@angular/forms';
@@ -11,11 +11,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppModule } from '../app.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { routes } from "./home.component";
+import { Location } from "@angular/common";
 
 describe('HomeComponent', () =>  {
     let component: HomeComponent;
     let fixture: ComponentFixture<HomeComponent>;
     let router: Router;
+    let location: Location;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -24,6 +27,9 @@ describe('HomeComponent', () =>  {
             providers: [FormBuilder]
         })
         .compileComponents();
+
+        router = TestBed.get(Router);
+        location = TestBed.get(Location);
     });
 
     beforeEach(() => {
@@ -38,5 +44,23 @@ describe('HomeComponent', () =>  {
         const app = fixture.debugElement.componentInstance;
         expect(component).toBeTruthy();
     });
+
+    it('navigate to "login" redirects you to /login', fakeAsync(() => {
+        router.navigate(["/login"]).then(() => {
+          expect(location.path()).toBe("/login");
+        });
+    }));
+    
+    it('navigate to "trips" takes you to /trips', fakeAsync(() => {
+        router.navigate(["/trips"]).then(() => {
+          expect(location.path()).toBe("/trips");
+        });
+    }));
+    
+    it('navigate to "" takes you to /', fakeAsync(() => {
+        router.navigate([""]).then(() => {
+          expect(location.path()).toBe("/");
+        });
+    }));
 
 });

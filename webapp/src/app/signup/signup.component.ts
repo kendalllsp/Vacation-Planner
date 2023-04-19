@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Routes } from "@angular/router"
+import { LoginComponent } from '../login/login.component';
+import { TripsCardDeckComponent } from '../trips/deck.component';
 
 @Component({
   selector: 'signup-component',
@@ -51,3 +54,8 @@ export class SignupComponent {
     
   }
 }
+
+export const routes: Routes = [
+  {path:'login', component: LoginComponent}, 
+  {path: 'trips', component: TripsCardDeckComponent}
+];
