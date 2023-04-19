@@ -3,17 +3,26 @@ package database
 import (
 	"fmt"
 	"log"
+	"os"
 	"vacation-planner/models"
 
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
+// 1. Declare specific
+
 // Error return value to Connect function for possible errors being thrown while connecting
 func Connect() (*gorm.DB, error) {
 
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Could not load .env file")
+	}
+
 	//default code found in GormPG docs
-	dsn := "host=24.199.69.57 user=dev password=K@Gf$+$n?EBV^K3% dbname=dev port=5432"
+	dsn := "host=" + os.Getenv("DB_HOST") + " user=" + os.Getenv("DB_USER") + " password=" + os.Getenv("DB_PASS") + " dbname=" + os.Getenv("DB_NAME") + " port=" + os.Getenv("DB_PORT")
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
