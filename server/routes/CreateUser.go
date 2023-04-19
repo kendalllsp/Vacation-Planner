@@ -8,75 +8,69 @@ import (
 	"vacation-planner/models"
 )
 
-// Create user POST, using HTTP request body information for email and password
+// 1. Check to ensure this route is being called only via POST.
+// 2. Initialize a structure for the response data.
+// 3. Handle data from within request body to be acted upon.
+// 4. Check the database for any user that already has the email.
+// 5. Create the user if there has not been a user with the given email.
+// 6. Check for any errors while creating new user.
+// 7. Write and package success response based if the user was created.
+// 8. Write and package failed response if the user was not created.
+
 func (h DBRouter) CreateUser(w http.ResponseWriter, r *http.Request) {
 
-	// Only POST is allowed for this route
+	// 1.
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
-	// Adding template response to be sent front end
+	// 2.
 	type SignupAttempt struct {
 		Success bool   `json: "success"`
 		Message string `json: "message"`
 	}
 
-	// Creating variable to store the requestBody (email and password on this route)
+	// 3.
 	var requestBody map[string]interface{}
-
-	// Creating variable to use as a reference for the DB table, and the new user being created in the DB
-	var user models.User
-
-	// Decoding body of the http request for the information for the user account
 	err := json.NewDecoder(r.Body).Decode(&requestBody)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	// Added a line to check the database for any users with the same email as the new account
+	// 4.
+	var user models.User
+	result := h.DB.First(&models.User{}, "Email = ?", requestBody["Email"].(string))
 
-	result := h.DB.First(&models.User{}, "Email = ?", strings.ToLower(requestBody["Email"].(string)))
-
-	// Checking if the rows that have the email is 0 therefore nobody has the email
+	// 5.
 	if result.RowsAffected == 0 {
-		// Assigning Email and Password to new User
 		user.Email = strings.ToLower(requestBody["Email"].(string))
 		user.Password = requestBody["Password"].(string)
-
-		// Creating new user in the DB and checking for error
 		if newUser := h.DB.Create(&user); newUser.Error != nil {
+			// 6.
 			fmt.Println(newUser.Error)
 		}
 
-		// Setting headers for JSON response
+		// 7.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-
-		// Initalizing response variable to hold a boolean and a string message
 		response := SignupAttempt{Success: true, Message: "User succesfully created account"}
-		// Packing response as type JSON
 		jsonResponse, err1 := json.Marshal(response)
 		if err1 != nil {
 			http.Error(w, err1.Error(), http.StatusBadRequest)
 			return
 		}
-		// Write JSON response
 		w.Write(jsonResponse)
 
 	} else {
-		// If Rows Affected (rows with email given) is not 0, therefore someone has an account with
-		// the email given, we don't create a new user and tell them their email is taken.
+		// 8.
 		response := SignupAttempt{Success: false, Message: "Email is already in use"}
 		jsonResponse, err2 := json.Marshal(response)
 		if err2 != nil {
 			http.Error(w, err2.Error(), http.StatusBadRequest)
 			return
 		}
-
-		// Returning the response
 		w.Write(jsonResponse)
 	}
 }

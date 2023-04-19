@@ -68,6 +68,8 @@ func (h DBRouter) UpdateDestination(w http.ResponseWriter, r *http.Request) {
 				// Assigning Email and Location to new location
 				savedLocation.Email = strings.ToLower(requestBody["Email"].(string))
 				savedLocation.Location = requestBody["Location"].(string)
+				savedLocation.Start = requestBody["Start"].(string)
+				savedLocation.End = requestBody["End"].(string)
 
 				// Creating new location in the DB and checking for error
 				if newLocation := h.DB.Create(&savedLocation); newLocation.Error != nil {
