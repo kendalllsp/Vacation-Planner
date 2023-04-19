@@ -70,13 +70,19 @@ export class TripsCardDeckComponent{
     });
   }
 
-  viewTrip(location: string){
+  viewTrip(location: string, start: string, end: string){
 
     var tripsUrl = 'http://localhost:8181/';
 
-    console.log(tripsUrl.concat("newDestination/", location) );
+    const params = {
+      location: location,
+      start: start,
+      end: end
+    };
+
+    console.log(tripsUrl.concat("newDestination", "&location=", location, "&start=", start, "&end=", end) );
     
-    this.http.get<any>(tripsUrl.concat("newDestination/", location)).pipe(
+    this.http.get<any>('http://localhost:8181/newDestination', { params }).pipe(
       map(response => {
       // Print request response to JS console
       console.log(response)
