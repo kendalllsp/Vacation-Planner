@@ -80,7 +80,7 @@ export class DestinationResultDialog {
       // Setting the location from the trip component to be passed to the backend
       // Using the email from the loggedIn variable
       var location = this.data.results.Location[0] + ", " + this.data.results.Location[1]
-      const params = { Email: sessionStorage.getItem('loggedIn'), Location: location }
+      const params = { Email: sessionStorage.getItem('loggedIn'), Location: location, Start: this.data.results.Start, End: this.data.results.End }
 
       const httpOptions = {
         headers: new HttpHeaders({
