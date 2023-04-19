@@ -21,6 +21,13 @@ Our selection of local spots is based on a filtered list pulled from the YelpAPI
 
 ## Screenshots
 
+#### Landing Page
+
+![Landing_page](/screenshots/landing_page.png)
+
+#### Login Page
+
+![Login_page](/screenshots/login_page.png)
 
 
 ## Development
