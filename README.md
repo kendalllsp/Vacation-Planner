@@ -38,7 +38,6 @@ go version
 npm --version
 docker -v
 ```
-#### Initializing backend
 
 Navigate to the `server` folder 
 
