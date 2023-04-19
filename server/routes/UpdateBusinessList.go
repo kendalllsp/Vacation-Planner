@@ -202,10 +202,11 @@ func (h DBRouter) UpdateBusinessList(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "GET" {
 
 		// Accessing the user's email from the URL parameters (GET)
-		email := r.URL.Query().Get("Email")
+
+		email := r.URL.Query().Get("email")
 
 		// Accessing the user's email from the URL parameters (GET)
-		location := r.URL.Query().Get("Location")
+		location := r.URL.Query().Get("location")
 
 		// Checking the database for the first user with email trying to update their location list
 		result := h.DB.First(&models.User{}, "Email = ?", email)

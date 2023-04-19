@@ -26,13 +26,13 @@ func main() {
 	// Route that can take 3 HTTP method requests to handle saved businesses in the savedBusinesses table for users to have businesses saved on their own Destination Lists
 	r.HandleFunc("/updateBusinessList", h.UpdateBusinessList).Methods("POST")
 	r.HandleFunc("/updateBusinessList", h.UpdateBusinessList).Methods("DELETE")
-	r.HandleFunc("/updateBusinessList", h.UpdateBusinessList).Queries("Email", "{email}", "Location", "{location}").Methods("GET")
+	r.HandleFunc("/updateBusinessList", h.UpdateBusinessList).Queries("email", "{email}", "location", "{location}").Methods("GET")
 
 	// POST request for creating a user in the database
 	r.HandleFunc("/createUser", h.CreateUser).Methods("POST")
 
 	// GET request to get relevant travel information for the user
-	r.HandleFunc("/newDestination/{location}/{start}/{end}", h.GetDestInfo).Methods("GET")
+	r.HandleFunc("/newDestination", h.GetDestInfo).Queries("location", "{location}", "start", "{start}", "end", "{end}").Methods("GET")
 
 	// POST to login a user while using username and password. Post ensures the info is not on the URL
 	r.HandleFunc("/loginUser", h.LoginUser).Methods("POST")

@@ -27,12 +27,12 @@ export class TripsService {
   getTrip(trip: Trip): Observable<any> {
 
     const params = {
-      dest: trip.dest,
+      location: trip.dest,
       start: trip.start,
       end: trip.end
     };
     
-    return this.http.get<any>(this.tripsUrl.concat("newDestination/", trip.dest, "/", trip.start, "/", trip.end));
+    return this.http.get<any>('http://localhost:8181/newDestination', { params });
   }
 
   private log(message: string) {
