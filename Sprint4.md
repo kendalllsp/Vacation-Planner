@@ -14,7 +14,11 @@
 - signup component test
 - navbar component test
 - trip component and subcomponent tests
-- navbar routing test (in development)
+- navbar routing test 
+- login routing test
+- home page routing test
+- trips page routing test
+- routing tests to originate from each page
 
 #### Backend:
 - create user function test
