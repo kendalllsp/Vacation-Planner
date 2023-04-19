@@ -27,7 +27,9 @@ func TestUpdateDestination(t *testing.T) {
 	//set email that isnt in database
 	email := "a@gmail.com"
 	location := "Paris"
-	payload := fmt.Sprintf(`{"Email": "%s", "Location": "%s"}`, email, location)
+	start := "2023-03-03"
+	end := "2023-12-27"
+	payload := fmt.Sprintf(`{"Email": "%s", "Location": "%s", "Start": "%s", "End": "%s"}`, email, location, start, end)
 
 	//make a request to the database
 	req, err := http.NewRequest("POST", "/updateDestination", strings.NewReader(payload))
@@ -64,7 +66,9 @@ func TestUpdateDestination(t *testing.T) {
 	//case 2: save new location (deleted in case 2 of DELETE)
 	email2 := "123@gmail.com"
 	location2 := "Oslo"
-	payload2 := fmt.Sprintf(`{"Email": "%s", "Location": "%s"}`, email2, location2)
+	start2 := "2023-03-03"
+	end2 := "2023-12-27"
+	payload2 := fmt.Sprintf(`{"Email": "%s", "Location": "%s", "Start": "%s", "End": "%s"}`, email2, location2, start2, end2)
 	req2, err := http.NewRequest("POST", "/updateDestination", strings.NewReader(payload2))
 	if err != nil {
 		t.Errorf("Error: request could not be completed")
@@ -85,9 +89,11 @@ func TestUpdateDestination(t *testing.T) {
 	}
 
 	//case 3: location has already been saved
-	email3 := "Test@test.com"
-	location3 := "Gainesville, FL"
-	payload3 := fmt.Sprintf(`{"Email": "%s", "Location": "%s"}`, email3, location3)
+	email3 := "test@test.com"
+	location3 := "Miami, FL"
+	start3 := "2023-03-03"
+	end3 := "2023-12-27"
+	payload3 := fmt.Sprintf(`{"Email": "%s", "Location": "%s", "Start": "%s", "End": "%s"}`, email3, location3, start3, end3)
 	req3, err := http.NewRequest("POST", "/updateDestination", strings.NewReader(payload3))
 	if err != nil {
 		t.Errorf("Error: request could not be completed")
@@ -111,7 +117,7 @@ func TestUpdateDestination(t *testing.T) {
 	//case 1: no user with that email
 	email4 := "a@gmail.com"
 	location4 := "Paris"
-	payload4 := fmt.Sprintf(`{"Email": "%s", "Location": "%s"}`, email4, location4)
+	payload4 := fmt.Sprintf(`{"Email": "%s", "Location": "%s", "Start": "%s", "End": "%s"}`, email4, location4, start, end)
 
 	//make a request to the database
 	req4, err := http.NewRequest("DELETE", "/updateDestination", strings.NewReader(payload4))
@@ -142,7 +148,7 @@ func TestUpdateDestination(t *testing.T) {
 	//case 2: location successfully deleted
 	email5 := "123@gmail.com"
 	location5 := "Oslo"
-	payload5 := fmt.Sprintf(`{"Email": "%s", "Location": "%s"}`, email5, location5)
+	payload5 := fmt.Sprintf(`{"Email": "%s", "Location": "%s", "Start": "%s", "End": "%s"}`, email5, location5, start, end)
 	req5, err := http.NewRequest("DELETE", "/updateDestination", strings.NewReader(payload5))
 	if err != nil {
 		t.Errorf("Error: request could not be completed")
@@ -165,7 +171,7 @@ func TestUpdateDestination(t *testing.T) {
 	//case 3: account does not have location saved
 	email6 := "123@gmail.com"
 	location6 := "Helsinki"
-	payload6 := fmt.Sprintf(`{"Email": "%s", "Location": "%s"}`, email6, location6)
+	payload6 := fmt.Sprintf(`{"Email": "%s", "Location": "%s", "Start": "%s", "End": "%s"}`, email6, location6, start, end)
 	req6, err := http.NewRequest("DELETE", "/updateDestination", strings.NewReader(payload6))
 	if err != nil {
 		t.Errorf("Error: request could not be completed")
@@ -189,7 +195,7 @@ func TestUpdateDestination(t *testing.T) {
 	//case 1: no user with that email
 	email = "a@gmail.com"
 	location = "Paris"
-	payload = fmt.Sprintf(`{"Email": "%s", "Location": "%s"}`, email, location)
+	payload = fmt.Sprintf(`{"Email": "%s", "Location": "%s", "Start": "%s", "End": "%s"}`, email, location, start, end)
 
 	//make a request to the database
 	req, err = http.NewRequest("GET", "/updateDestination", strings.NewReader(payload))
@@ -219,7 +225,7 @@ func TestUpdateDestination(t *testing.T) {
 	//case 2: returns an array of locations
 	email = "Test@test.com"
 	location = "Paris"
-	payload = fmt.Sprintf(`{"Email": "%s", "Location": "%s"}`, email, location)
+	payload = fmt.Sprintf(`{"Email": "%s", "Location": "%s", "Start": "%s", "End": "%s"}`, email, location, start, end)
 	req, err = http.NewRequest("GET", "/updateDestination", strings.NewReader(payload))
 	if err != nil {
 		t.Errorf("Error: request could not be completed")
@@ -247,7 +253,7 @@ func TestUpdateDestination(t *testing.T) {
 	//case 3: list empty
 	email = "123@gmail.com"
 	location = "Paris"
-	payload = fmt.Sprintf(`{"Email": "%s", "Location": "%s"}`, email, location)
+	payload = fmt.Sprintf(`{"Email": "%s", "Location": "%s", "Start": "%s", "End": "%s"}`, email, location, start, end)
 	req, err = http.NewRequest("GET", "/updateDestination", strings.NewReader(payload))
 	if err != nil {
 		t.Errorf("Error: request could not be completed")
