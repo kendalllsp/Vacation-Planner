@@ -6,82 +6,82 @@ import (
 	"vacation-planner/models"
 )
 
-// Login user POST, using HTTP request body information for email and password
+// 1. Check to ensure this route is being called only via POST.
+// 2. Initialize a structure for the response data.
+// 3. Handle data from within request body to be acted upon.
+// 4. Check the database to make sure any user has the email.
+// 5. If there is a user with the email, check to see if the password given does not match that email's password.
+// 6. Create, package and write failed response if the password does not match already created user with given email.
+// 7. Create, package, and write success response if given password matches the saved password.
+// 8. Create, package, and write failed response if no user in database has the given email.
+
 func (h DBRouter) LoginUser(w http.ResponseWriter, r *http.Request) {
 
-	// Only POST is allowed for this route
+	// 1.
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
-	// Initialized response struct with boolean and message for details
+	// 2.
 	type LoginAttempt struct {
-		LoggedIn 	bool 	`json: "loggedin"`
-		// Added an email string value to the response JSON so that the front-end can use it
-		// easily when sending requests revolving user's email.
-		Email 		string	`json: "email"`
-		Message 	string	`json: "message"`
+		LoggedIn bool   `json: "loggedin"`
+		Email    string `json: "email"`
+		Message  string `json: "message"`
 	}
 
-	// Creating new variable for storing request body
+	// 3.
 	var requestBody map[string]interface{}
-
-	// Decoding body of the http request for the information for the user account
 	err := json.NewDecoder(r.Body).Decode(&requestBody)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	// Added a line to check the database if a user exist with same email given
+	// 4.
 	existingUser := &models.User{}
 	result := h.DB.First(existingUser, "Email = ?", requestBody["Email"].(string))
-
-	// Checking if the rows that have the email isn't 0 therefore somebody has the email
 	if result.RowsAffected != 0 {
 
-		// Checking if the password given in the request matches the password stored for the user in the DB
+		// 5.
 		if existingUser.Password != requestBody["Password"].(string) {
-			// Creating new response under LoginAttempt struct style
-			// Marshaling response as JSON and writing it as response
-			// Now including the Email string in the response
-			response := LoginAttempt { LoggedIn: false, Email: requestBody["Email"].(string), Message: "Email and password combination does not exist." }
+    
+			// 6.
+			response := LoginAttempt{LoggedIn: false, Email: requestBody["Email"].(string), Message: "Email and password combination does not exist."}
 			jsonResponse, err1 := json.Marshal(response)
 			if err1 != nil {
 				http.Error(w, err1.Error(), http.StatusBadRequest)
 				return
 			}
-			w.Write(jsonResponse)
-		} else {
-
-			// Setting headers
-			w.Header().Set("Content-Type", "application/json")
+      w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
-
-			// Creating new response under LoginAttempt struct style
-			// Marshaling response as JSON and writing it as response
-			// Now including the Email string in the response
-
-			response := LoginAttempt { LoggedIn: true, Email: requestBody["Email"].(string), Message: "User successfully logged in." }
+			w.Write(jsonResponse)
+      
+    } else {
+    
+			// 7.
+			response := LoginAttempt{LoggedIn: true, Email: requestBody["Email"].(string), Message: "User successfully logged in."}
 			jsonResponse, err2 := json.Marshal(response)
 			if err2 != nil {
 				http.Error(w, err2.Error(), http.StatusBadRequest)
 				return
 			}
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
 			w.Write(jsonResponse)
+
 		}
 	} else {
-		// If Rows Affected (rows with email given) is  0, therefore nobody has an account with
-		// the email given, we can't login the user and tell them their email is not in use by our website.
-		// Now including the Email string in the response
-
-		response := LoginAttempt { LoggedIn: false, Email: requestBody["Email"].(string), Message: "Email not in use in our userbase." }
-			jsonResponse, err3 := json.Marshal(response)
-			if err3 != nil {
-				http.Error(w, err3.Error(), http.StatusBadRequest)
-				return
-			}
-			w.Write(jsonResponse)
+  
+		// 8.
+		response := LoginAttempt{LoggedIn: false, Email: requestBody["Email"].(string), Message: "Email not in use in our userbase."}
+		jsonResponse, err3 := json.Marshal(response)
+		if err3 != nil {
+			http.Error(w, err3.Error(), http.StatusBadRequest)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(jsonResponse)
 	}
 }

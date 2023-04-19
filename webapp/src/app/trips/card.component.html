@@ -1,19 +1,75 @@
-<div class="content">
-    <mat-card class="mat-elevation-z4">
-      <mat-card-header>
-        <mat-card-title>Miami</mat-card-title>
-        <mat-card-subtitle>03/10/2023-03/12/2023</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="../../assets/images/miami.jpg">
-      <mat-card-content>
-        <p>
-          Miami, officially the City of Miami, 
-          known as "the 305", "The Magic City", and "Gateway to the Americas", 
-          is a coastal metropolis and the seat of Miami-Dade County in South Florida
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button color="primary" mat-raised-button>View Trip</button>
-      </mat-card-actions>
-    </mat-card>
+<!-- <div class="destination-dialog-header">
+  <h2 mat-dialog-title>{{data.results.Location[0]}}, {{data.results.Location[1]}}  Highlights
+      <a (click)="saveDestination()" type="button"><fa-icon [icon]="isBookmarked"></fa-icon></a>
+  </h2>
 </div>
+
+
+<div mat-dialog-content>
+  <h3>Restaurants</h3>
+  <div class="scrolling-wrapper-flexbox" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch">
+      <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="75%" *ngFor="let item of data.results.Restaurants">
+          <div class="content">
+              <mat-card>
+                  <mat-card-header>
+                  <mat-card-title>{{item.Name}}</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content>
+                      <p>Rating: {{item.Rating}}<br>
+                          Price: {{item.Price}}<br>
+                          Location: {{item.Location}}<br>
+                          Type: {{item.Type}}<br></p>
+                  </mat-card-content>
+                  <mat-card-actions>
+                  <button mat-button>Save</button>
+                  </mat-card-actions>
+              </mat-card>
+          </div>
+      </div>
+  </div>
+
+  <h3>Entertainment</h3>
+  <div class="scrolling-wrapper-flexbox" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch">
+      <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="75%" *ngFor="let item of data.results.Entertainment">
+          <div class="content">
+              <mat-card>
+                  <mat-card-header>
+                  <mat-card-title>{{item.Name}}</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content>
+                      <p>Rating: {{item.Rating}}<br>
+                          Price: {{item.Price}}<br>
+                          Location: {{item.Location}}<br>
+                          Type: {{item.Type}}<br></p>
+                  </mat-card-content>
+                  <mat-card-actions>
+                  <button mat-button>Save</button>
+                  </mat-card-actions>
+              </mat-card>
+          </div>
+      </div>
+  </div>
+  <h3>Shopping</h3>
+  <div class="scrolling-wrapper-flexbox" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch">
+      <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="75%" *ngFor="let item of data.results.Shopping">
+          <div class="content">
+              <mat-card>
+                  <mat-card-header>
+                  <mat-card-title>{{item.Name}}</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content>
+                      <p>Rating: {{item.Rating}}<br>
+                          Price: {{item.Price}}<br>
+                          Location: {{item.Location}}<br>
+                          Type: {{item.Type}}<br></p>
+                  </mat-card-content>
+                  <mat-card-actions>
+                  <button mat-button>Save</button>
+                  </mat-card-actions>
+              </mat-card>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Created a new dialog action area for the save destination button that calls
+   the saveDestination function in the dest. dialog component --> -->

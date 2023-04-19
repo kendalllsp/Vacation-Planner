@@ -26,7 +26,7 @@ describe('TripsComponent', () =>  {
         router = TestBed.inject(Router);
     });
 
-    it('should create the TripsComponent component', () => {
+    it('should create the TripsComponent', () => {
         const fixture = TestBed.createComponent(TripsComponent);
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();

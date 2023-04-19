@@ -32,7 +32,7 @@ describe('SignupComponent', () =>  {
         router = TestBed.inject(Router);
     });
 
-    it('should create the navbar component', () => {
+    it('should create the SignupComponent', () => {
         const fixture = TestBed.createComponent(SignupComponent);
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();

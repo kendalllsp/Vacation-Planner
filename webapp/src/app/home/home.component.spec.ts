@@ -39,7 +39,7 @@ describe('HomeComponent', () =>  {
         router = TestBed.inject(Router);
     });
 
-    it('should create the home component', () => {
+    it('should create the HomeComponent ', () => {
         const fixture = TestBed.createComponent(HomeComponent);
         const app = fixture.debugElement.componentInstance;
         expect(component).toBeTruthy();

@@ -1,10 +1,12 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, HostListener, ViewChild, ElementRef} from '@angular/core';
 import {FormControl, FormGroup,} from '@angular/forms';
 import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { map, catchError, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Trip } from '../trip';
 import { TripsService } from '../trips.service';
+import { faBookmark as faBookmarkSolid  } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark  } from '@fortawesome/free-regular-svg-icons';
 
 import { Destination } from '../destination';
 
@@ -55,20 +57,30 @@ export class TripSearchComponent {
 
 @Component({
   selector: 'destination-dialog',
+  styleUrls: ['destination-dialog.component.scss'],
   templateUrl: 'destination-dialog.component.html',
 })
 export class DestinationResultDialog {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private http: HttpClient) {}
 
+  faBookmark = faBookmark;
+  faBookmarkSolid = faBookmarkSolid;
+
+  isBookmarked = faBookmark;
+
   // Created function for when the save destination button is clicked on within the dialog window
   saveDestination() {
+    if(this.isBookmarked == faBookmark){
+      this.isBookmarked = faBookmarkSolid;
+    }
+    
     // Checking if the loggedIn sessionStorage value has been set
     if (sessionStorage.getItem('loggedIn') != null)
     {
       // Setting the location from the trip component to be passed to the backend
       // Using the email from the loggedIn variable
       var location = this.data.results.Location[0] + ", " + this.data.results.Location[1]
-      const params = { Email: sessionStorage.getItem('loggedIn'), Location: location }
+      const params = { Email: sessionStorage.getItem('loggedIn'), Location: location, Start: this.data.results.Start, End: this.data.results.End }
 
       const httpOptions = {
         headers: new HttpHeaders({
@@ -89,4 +101,6 @@ export class DestinationResultDialog {
       console.log("You have to log in, dork.")
     }
   }
+
+  
 }

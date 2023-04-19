@@ -57,8 +57,7 @@ import { RouterLinkWithHref } from '@angular/router';
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule,
-    RouterLinkWithHref
+    FlexLayoutModule
   ],
   providers: [
     MessageService
