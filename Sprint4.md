@@ -1,11 +1,10 @@
 # **Work Completed for Sprint 4:**
 
-- Created tests for frontend
-- Created 'logged in' status variable to detect when a user is logged in even when changing pages
-- Added ability for user to save and delete locations
-- Added ability for user to see list of saved destions
+- Created new tests for frontend
+- Added ability for user to see businesses in saved trips in UI
+- Added ability to save and display trip dates in UI
 - Created new unit testing for the added backend functionality
-- Created new UI for search results page
+- Added ability to save individual businesses to a database (not available in UI)
 
 # **Unit Tests:**
 
@@ -161,7 +160,7 @@ Response:
 
 Parameters: 
 - Function takes in user's email address and the location we want businesses from as query parameters in the URL like so:
- /updateDestination?Email=email@example.com&location=Austin,TX
+ /updateBusinessList?email=email@example.com&location=Austin,TX
 
 Response:
 - Function returns a JSON file with all businesses stored in an array, where each location is in the format:
