@@ -13,28 +13,39 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// 1. Obtain private API key.
+// 2. Refer to the request parameters for the location the user is attempting to search.
+// 3. Initialize connect to the Yelp Fusion API.
+// 4. Set relevant filters for Fashion business search.
+// 5. Perform business search for Fashion businesses and check for any errors during Fashion business search.
+// 6. Initialize variable and loop through results of Fashion Business search to save data needed for user.
+// 7. Set relevant filters for Entertainment business search.
+// 8. Perform business search for Entertainment businesses and check for any errors during Entertainment business search.
+// 9. Initialize variable and loop through results of Entertainment Business search to save data needed for user.
+// 10. Set relevant filters for Food business search.
+// 11. Perform business search for Food businesses and check for any errors during Food business search.
+// 12. Initialize variable and loop through results of Food Business search to save data needed for user.
+// 13. Use result closest to location specified by user to determine returned Location values (city, state, country)
+// 14. Initialize variable to store all of the search results, the location result derived above, and the start and end dates specified by the user.
+// 15. Write filled response variable for front end.
+
 func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
 
-	// Setting the Headers for the response type to be JSON
-	w.Header().Set("Content-Type", "application/json")
-
-	// Loading the API key from a private .env file with GoDotEnv
+	// 1.
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Could not load .env file")
 	}
-
-	// Setting the local API key value
 	yelpAPIKey := os.Getenv("YELP_REST_API_KEY")
 
-	// Taking the location value typed by the user, to use for computations
+	// 2.
 	params := mux.Vars(r)
 	destinationLocation := params["location"]
 
-	// Starting new Yelp client
+	// 3.
 	yelp := yfusion.NewYelpFusion(yelpAPIKey)
 
-	// Setting all relevant filters for Fashion store search
+	// 4.
 	businessSearch := &yfusion.BusinessSearchParams{}
 	businessSearch.SetLocation(destinationLocation)
 	businessSearch.SetTerm("fashion")
@@ -42,16 +53,14 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
 	businessSearch.SetRadius(15000)
 	businessSearch.SetSortBy("rating")
 
-	// Searching based off of previous filters for Fashion search and error checking
+	// 5.
 	shoppingResult, err := yelp.SearchBusiness(businessSearch)
 	if err != nil {
 		fmt.Println("Fashion clothing business search could not be completed.")
 	}
 
-	// Creating new slice of size 10 for the top 10 rated Fashion Shopping businesses
+	// 6.
 	var ShoppingList [10]models.Business
-
-	// Looping through results of the search to populate slice of fashion shopping businesses
 	for i, b := range shoppingResult.Businesses {
 		ShoppingList[i].Name = b.Name
 		ShoppingList[i].Price = b.Price
@@ -59,29 +68,27 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
 		ShoppingList[i].Location = b.Location.Address1
 		ShoppingList[i].Type = b.Categories[0].Title
 
-		// Filling price string with not listed rather than empty string
+		// "Not listed" when the price is empty
 		if len(ShoppingList[i].Price) < 1 {
 			ShoppingList[i].Price = "Not listed"
 		}
 	}
 
-	// Entertainment search filters
+	// 7.
 	businessSearch.SetLocation(destinationLocation)
 	businessSearch.SetTerm("arts")
 	businessSearch.SetLimit(10)
 	businessSearch.SetRadius(15000)
 	businessSearch.SetSortBy("rating")
 
-	// Entertainment search results based on before mentioned filters for Entertainment
+	// 8.
 	entertainmentResult, err := yelp.SearchBusiness(businessSearch)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Entertainment slice
+	// 9.
 	var EntertainmentList [10]models.Business
-
-	// Entertainment slice population
 	for i, b := range entertainmentResult.Businesses {
 		EntertainmentList[i].Name = b.Name
 		EntertainmentList[i].Price = b.Price
@@ -95,23 +102,21 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Food search filters
+	// 10.
 	businessSearch.SetLocation(destinationLocation)
 	businessSearch.SetTerm("food")
 	businessSearch.SetLimit(10)
 	businessSearch.SetRadius(15000)
 	businessSearch.SetSortBy("rating")
 
-	// Food search results based off of food search filters
+	// 11.
 	restaurantResult, err := yelp.SearchBusiness(businessSearch)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Food slice
+	// 12.
 	var RestaurantList [10]models.Business
-
-	// Food slice populating
 	for i, b := range restaurantResult.Businesses {
 		RestaurantList[i].Name = b.Name
 		RestaurantList[i].Price = b.Price
@@ -125,14 +130,11 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Creating variables to calculate formal city, state, country for the response
-	// Using the top rated business with the shortest distance from the designated location
-	// To determine city, state and country
+	// 13.
 	var shortestDistance float64
 	var city string
 	var state string
 	var country string
-
 	for index := 0; index < len(restaurantResult.Businesses); index++ {
 		if index == 0 {
 			shortestDistance = restaurantResult.Businesses[index].Distance
@@ -149,7 +151,7 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Creating destination object of which we will return
+	// 14.
 	destination := &models.Destination{
 		Location:      [3]string{city, state, country},
 		Restaurants:   RestaurantList,
@@ -159,6 +161,8 @@ func (h DBRouter) GetDestInfo(w http.ResponseWriter, r *http.Request) {
 		End:           params["end"],
 	}
 
-	// Returning destination object
+	// 15.
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(destination)
 }
