@@ -235,4 +235,4 @@ Response:
 
 # **Demo Video:**
 This is a link to a video detailing the final functionality of our integrated application:
-https://www.canva.com/design/DAFgmJHBM2E/watch
+[https://www.canva.com/design/DAFgmJHBM2E/watch](https://www.canva.com/design/DAFgmJHBM2E/daAslWTDXyd5vmHesiuI9g/watch?utm_content=D[…]t_publish&utm_medium=link&utm_source=celebratory_first_publish)
